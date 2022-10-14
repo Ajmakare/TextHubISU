@@ -1,18 +1,20 @@
 import { response } from "express";
 import Pool from "pg";
+import * as dotenv from "dotenv";
+dotenv.config()
 
 const pgPool = Pool.Pool;
 
 const pool = new pgPool({
-    user: "dev-texthub",
-    host: "34.134.83.78",
+    user: dbConnect.env.USERNAME,
+    host: dbConnect.env.HOST,
     database: "texthubdatabase",
-    password: "texthub123",
+    password: dbConnect.env.PASSWORD,
     port:"5432"
 });
 
 const getTextbooks = async(request, respones) => {
-    pool.query("SELECT * FROM textbooks", (error, results) => {
+    pool.query("SELECT * FROM textbook", (error, results) => {
         if(error) {throw error;}
         response.status(200).json(results);
     });

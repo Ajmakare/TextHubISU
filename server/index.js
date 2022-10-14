@@ -2,7 +2,7 @@
 
 import student_db_functions from './Controllers/studentController.js';
 
-const express = require("express");
+import express from "express";
 
 const PORT = process.env.PORT || 3001;
 
