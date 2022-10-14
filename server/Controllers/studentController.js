@@ -14,8 +14,7 @@ const pool = new pgPool({
 });
 
 const getTextbooks = async(request, respones) => {
-    pool.query("SELECT * FROM textbook", (error, results) => {
-        if(error) {throw error;}
+    pool.query("SELECT * FROM textbook", (results) => {
         response.status(200).json(results);
     });
 };
