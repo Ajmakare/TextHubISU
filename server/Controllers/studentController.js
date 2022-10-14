@@ -6,10 +6,10 @@ dotenv.config()
 const pgPool = Pool.Pool;
 
 const pool = new pgPool({
-    user: dbConnect.env.USERNAME,
-    host: dbConnect.env.HOST,
+    user: process.env.USERNAME,
+    host: process.env.HOST,
     database: "texthubdatabase",
-    password: dbConnect.env.PASSWORD,
+    password: process.env.PASSWORD,
     port:"5432"
 });
 
