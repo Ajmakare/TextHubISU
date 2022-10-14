@@ -1,0 +1,13 @@
+// import Pool from "pg";
+
+// const pgPool = Pool.Pool;
+
+// const pool = new pgPool({
+//     user: "postgres",
+//     host: "34.134.83.78",
+//     database: "texthubdb",
+//     password: "texthub123",
+//     port:"5432"
+// });
+
+
