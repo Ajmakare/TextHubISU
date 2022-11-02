@@ -1,6 +1,6 @@
 from django.test import TestCase
-from texthubhomepage.migrations.DataStores import AdminDataStore, TextbookDataStore
-from texthubhomepage.migrations.Controllers import AdminController, SiteController, TextbookController
+from DataStores import AdminDataStore, TextbookDataStore
+from Controllers import AdminController, SiteController, TextbookController
 
 
 class AdminDataStoreTest(TestCase):
