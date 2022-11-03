@@ -29,3 +29,6 @@ class TextbookDataStore():
 
     def update_view_count():
         pass
+
+    def submit_review():
+        pass

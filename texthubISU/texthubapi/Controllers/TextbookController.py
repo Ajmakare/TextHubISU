@@ -20,3 +20,6 @@ def update_ISBN_controller():
 
 def update_view_count_controller():
     pass
+
+def submit_review_controller():
+    pass
