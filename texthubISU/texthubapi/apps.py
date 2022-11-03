@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TexthubhomepageConfig(AppConfig):
+class Texthubapi(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'texthubhomepage'
+    name = 'texthubapi'
