@@ -5,8 +5,12 @@ class TextbookDataStore():
     # Get all data (rows) associated with an ISBN
     # We want to retrieve all site info for a single isbn to display to user
     def do_search(ISBN):
-        queryset = Textbook.objects.filter(ISBN = ISBN)
-        return queryset
+        try:
+            queryset = Textbook.objects.filter(ISBN = ISBN)
+            return queryset
+        except:
+            print("Could not retrieve textbooks with ISBN: " + ISBN)
+            pass
 
     def request_ISBN():
         pass

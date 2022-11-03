@@ -1,10 +1,7 @@
 from ..DataStores.TextbookDataStore import *
 
 def do_search_controller(ISBN):
-    try:
         return TextbookDataStore.do_search(ISBN)
-    except:
-        pass
 
 def request_ISBN_controller():
     pass
