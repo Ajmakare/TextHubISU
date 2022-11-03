@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'texthubhomepage.apps.TexthubhomepageConfig',
+    'texthubapi.apps.Texthubapi',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
