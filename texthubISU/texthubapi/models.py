@@ -34,3 +34,7 @@ class Feedback(models.Model):
     feedback_content = models.CharField(max_length=264)
     def __str__(self):
         return self.feedbackID
+
+class Requests(models.Model):
+    requestID = models.CharField(max_length=264, unique=True)
+    requestISBN = models.CharField(max_length=264)

@@ -13,3 +13,6 @@ admin.site.register(Feedback)
 
 from .models import Admin
 admin.site.register(Admin)
+
+from .models import Requests
+admin.site.register(Requests)
