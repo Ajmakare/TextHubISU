@@ -10,12 +10,4 @@ class AdminDataStoreTest(TestCase):
 class TextbookDataStoreTest(TestCase):
     pass
 
-class AdminControllerTest(TestCase):
-    pass
-
-class SiteControllerTest(TestCase):
-    pass
-
-class TextbookControllerTest(TestCase):
-    pass
 
