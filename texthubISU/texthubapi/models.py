@@ -4,21 +4,25 @@ from django.db import models
 
 # Create your models here.
 class Textbook(models.Model):
-    textbookID = models.CharField(max_length=264, unique=True)
-    ISBN = models.CharField(max_length=264)
+    ISBN = models.CharField(max_length=264, unique=True)
     author = models.CharField(max_length=264)
     name = models.CharField(max_length=264)
+    view_count = models.IntegerField(default = 0)
+    def __str__(self):
+        return self.ISBN
+
+class Source(models.Model):
+    sourceID = models.CharField(max_length=264, unique=True)
     price = models.DecimalField(max_digits=29, decimal_places=2, default=0.00)
     url = models.CharField(max_length=264)
-    view_count = models.IntegerField(default = 0)
-
+    ISBN = models.ForeignKey(Textbook, on_delete=models.CASCADE)
     def __str__(self):
-        return self.textbookID
+        return self.sourceID
 
 class Review(models.Model):
     reviewID = models.CharField(max_length=264, unique=True)
-    ISBN = models.CharField(max_length=264)
     review_content = models.CharField(max_length=264)
+    ISBN = models.ForeignKey(Textbook, on_delete=models.CASCADE)
     def __str__(self):
         return self.reviewID
 
@@ -35,6 +39,6 @@ class Feedback(models.Model):
     def __str__(self):
         return self.feedbackID
 
-class Requests(models.Model):
+class Request(models.Model):
     requestID = models.CharField(max_length=264, unique=True)
     requestISBN = models.CharField(max_length=264)
