@@ -15,7 +15,7 @@ class Source(models.Model):
     sourceID = models.CharField(max_length=264, unique=True, primary_key=True)
     price = models.DecimalField(max_digits=29, decimal_places=2, default=0.00)
     url = models.CharField(max_length=264)
-    ISBN = models.CharField(max_length=264, default = '')
+    ISBN = models.ForeignKey(Textbook, related_name='sources', on_delete = models.CASCADE)
     def __str__(self):
         return self.sourceID
 
