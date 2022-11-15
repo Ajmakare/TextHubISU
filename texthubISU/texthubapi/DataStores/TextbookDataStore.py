@@ -1,5 +1,6 @@
 from ..serializers import *
 from ..models import Textbook
+from ..models import Requests
 
 class TextbookDataStore():
     # Get all data (rows) associated with an ISBN
@@ -11,9 +12,15 @@ class TextbookDataStore():
         except:
             print("Could not retrieve textbooks with ISBN: " + ISBN)
             pass
-
-    def request_ISBN():
-        pass
+    
+    #send an ISBN to be listed on the admin page
+    def request_ISBN(ISBN):
+        try:
+            ISBNreq = Requests(RequestISBN = ISBN)
+            return ISBNreq
+        except:
+            print("Could not request an ISBN")
+            pass
 
     def retrieve_all_textBooks():
         pass
