@@ -16,10 +16,22 @@ class TextbookDataStore():
         pass
 
     def retrieve_all_textBooks():
-        pass
+        try:
+            queryset = Textbook.objects.all()
+            return queryset
+        except:
+            print("Could not retrieve textbooks")
+            pass
 
-    def delete_ISBN():
-        pass
+    def delete_ISBN(ISBN):
+        try:
+            queryset = Textbook.objects.filter(ISBN = ISBN)
+            print("Deleting textbooks with ISBN: " + ISBN)
+            queryset.delete()
+            return queryset
+        except:
+            print("Could not delete textbooks with ISBN: " + ISBN)
+            pass
 
     def add_ISBN():
         pass

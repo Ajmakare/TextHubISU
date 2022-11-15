@@ -4,6 +4,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'textbooks', views.DoSearchView)
+router.register(r'textbooks2', views.TextbookViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
