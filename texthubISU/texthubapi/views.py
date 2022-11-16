@@ -14,6 +14,5 @@ class DoSearchView(generics.ListAPIView):
     serializer_class = TextbookSerializer
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
-        print(isbn)
         queryset = do_search_controller(isbn)
         return queryset
