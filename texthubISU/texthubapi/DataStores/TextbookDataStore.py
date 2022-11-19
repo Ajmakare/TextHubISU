@@ -1,10 +1,7 @@
 from ..serializers import *
 from ..models import Textbook
-<<<<<<< HEAD
 from ..models import Requests
-=======
 from itertools import chain
->>>>>>> 0b44d790ddb2bae86552231af2aae9931ba19a99
 
 class TextbookDataStore():
     # Get all data (rows) associated with an ISBN
