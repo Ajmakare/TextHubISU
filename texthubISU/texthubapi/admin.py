@@ -5,6 +5,9 @@ from django.contrib import admin
 from .models import Textbook
 admin.site.register(Textbook)
 
+from .models import Source
+admin.site.register(Source)
+
 from .models import Review
 admin.site.register(Review)
 
@@ -14,5 +17,5 @@ admin.site.register(Feedback)
 from .models import Admin
 admin.site.register(Admin)
 
-from .models import Requests
-admin.site.register(Requests)
+from .models import Request
+admin.site.register(Request)
