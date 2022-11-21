@@ -10,7 +10,7 @@ class TextbookDataStore():
     # We want to retrieve all site info for a single isbn to display to user
     def do_search(param_isbn):
         try:
-            queryset = Textbook.objects.filter(ISBN=param_isbn)
+            queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
             return queryset
         except:
             print("Could not retrieve textbooks with ISBN: " + param_isbn)
