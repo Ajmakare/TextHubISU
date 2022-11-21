@@ -12,8 +12,8 @@ def retrieve_all_textBooks_controller():
 def delete_ISBN_controller():
     pass
 
-def add_ISBN_controller():
-    pass
+def add_ISBN_controller(request):
+    return TextbookDataStore.add_ISBN(request)
 
 def update_ISBN_controller():
     pass

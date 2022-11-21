@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from rest_framework import generics
 
 from .serializers import *
-from texthubapi.Controllers.TextbookController import do_search_controller
+from texthubapi.Controllers.TextbookController import *
 from .models import Textbook
 from .forms import AddISBN
 
@@ -23,19 +23,4 @@ class DoSearchView(generics.ListAPIView):
 
 
 def addisbn(request):
-    if request.method == 'POST':
-        form = AddISBN(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            isbn = form.cleaned_data['ISBN']
-            author = form.cleaned_data['author']
-
-            example1 = Textbook()
-            example1.ISBN = isbn
-            example1.author = author
-            example1.name = name
-            example1.view_count = 0
-            example1.save()
-
-    form = AddISBN()
-    return render(request, 'addisbn.html', {"form": form})
+    return add_ISBN_controller(request)
