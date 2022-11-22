@@ -18,6 +18,6 @@ class DoSearchView(generics.ListAPIView):
         queryset = do_search_controller(isbn)
         return queryset
 
-class RequestISBNView(viewsets.ModelViewSet):
+class RequestISBNView(generics.ListAPIView):
     reqISBN = request_ISBN_controller("testrequest")
     serializer_class = TextbookSerializer

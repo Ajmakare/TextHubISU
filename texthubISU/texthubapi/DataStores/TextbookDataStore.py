@@ -1,6 +1,6 @@
 from ..serializers import *
 from ..models import Textbook
-from ..models import Requests
+from ..models import Request
 from itertools import chain
 
 class TextbookDataStore():
@@ -17,7 +17,7 @@ class TextbookDataStore():
     #send an ISBN to be listed on the admin page
     def request_ISBN(ISBN):
         try:
-            ISBNreq = Requests(RequestISBN = ISBN)
+            ISBNreq = Request(RequestISBN = ISBN)
             return ISBNreq
         except:
             print("Could not request an ISBN")
