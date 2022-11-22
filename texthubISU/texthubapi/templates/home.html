@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Using the formset -->
+    {{ reviewisbn_form }}
+
+    <button type="submit">Submit Review</button>
+</form>
