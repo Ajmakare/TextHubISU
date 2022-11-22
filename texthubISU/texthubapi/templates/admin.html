@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Using the formset -->
+    {{ addisbn_form }}
+
+    <button type="submit">Add textbook</button>
+</form>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ deleteisbn_form }}
+
+    <button type="submit">Delete textbook</button>
+</form>
