@@ -1,7 +1,6 @@
+class AdminDatastore:
+    def add_admin():
+        pass
 
-
-def add_admin():
-    pass
-
-def login():
-    pass
+    def login():
+        pass

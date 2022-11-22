@@ -19,7 +19,7 @@ class DoSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
-        queryset = do_search_controller(isbn)
+        queryset = TextbookController.do_search_controller(isbn)
         return queryset
 
 

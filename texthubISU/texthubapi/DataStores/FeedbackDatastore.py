@@ -1,2 +1,4 @@
-def submit_feedback():
-    pass
+class FeedbackDatastore:
+
+    def submit_feedback():
+        pass
