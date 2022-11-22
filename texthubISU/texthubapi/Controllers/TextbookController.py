@@ -23,5 +23,5 @@ class TextbookController:
     def update_view_count_controller():
         pass
 
-    def submit_review_controller():
-        pass
+    def submit_review_controller(request):
+        return TextbookDataStore.submit_review(request)

@@ -9,3 +9,7 @@ class AddISBN(forms.Form):
 
 class DeleteISBN(forms.Form):
     ISBNToDelete = forms.CharField(label="ISBN", max_length=264)
+
+class ReviewISBN(forms.Form):
+    ISBNToReview = forms.CharField(label = "ISBN", max_length=264)
+    ReviewContent = forms.CharField(label = "Review", max_length=264)

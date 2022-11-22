@@ -5,9 +5,7 @@ from rest_framework import generics
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
 from .models import Textbook
-from .forms import AddISBN
-from .forms import DeleteISBN
-
+from .forms import *
 
 def index(request):
     return HttpResponse("Welcome to the ISU TextHub home page!")
@@ -22,11 +20,20 @@ class DoSearchView(generics.ListAPIView):
         queryset = TextbookController.do_search_controller(isbn)
         return queryset
 
+def home_view(request):
+    try:
+        if request.method == 'POST':
+            if 'ISBNToReview' in request.POST:
+                TextbookController.submit_review_controller(request)
+        context = {
+            'reviewisbn_form': ReviewISBN,
+        }
+        return render(request, 'home.html', context=context)
+    except:
+        return "Home page exception"
+
 
 def admin(request):
-
-    addisbn_form = AddISBN()
-    deleteisbn_form = DeleteISBN()
     print(request.POST)
     print(list(request.POST.items()))
     try:
@@ -41,4 +48,4 @@ def admin(request):
         }
         return render(request, 'admin.html', context=context)
     except:
-        return "Add admin failure"
+        return "Admin page exception"

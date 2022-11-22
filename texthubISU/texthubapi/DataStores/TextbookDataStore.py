@@ -1,10 +1,9 @@
 from ..serializers import *
-from ..models import Textbook
+from ..models import *
 from itertools import chain
 from ..serializers import *
-from ..forms import AddISBN
+from ..forms import *
 from django.shortcuts import render
-from ..forms import DeleteISBN
 
 class TextbookDataStore():
     # Get all data (rows) associated with an ISBN
@@ -24,12 +23,15 @@ class TextbookDataStore():
         pass
 
     def delete_ISBN(request):
+        try:
             print('delete pls')
             deleteisbn_form = DeleteISBN(request.POST)
             if deleteisbn_form.is_valid():
                 isbn_from_form = deleteisbn_form.cleaned_data['ISBNToDelete']
 
                 Textbook.objects.filter(ISBN=isbn_from_form).delete()
+        except:
+            return "Delete ISBN exception"
 
     def add_ISBN(request):
         try:
@@ -48,7 +50,7 @@ class TextbookDataStore():
                 print("add an isbn")
                 example1.save()
         except:
-            return "Add admin failure"
+            return "Add ISBN exception"
 
     def update_ISBN():
         pass
@@ -56,5 +58,14 @@ class TextbookDataStore():
     def update_view_count():
         pass
 
-    def submit_review():
-        pass
+    def submit_review(request):
+        try:
+            reviewisbn_form = ReviewISBN(request.POST)
+            if reviewisbn_form.is_valid():
+                isbn_review = reviewisbn_form.cleaned_data['ISBNToReview']
+                review = reviewisbn_form.cleaned_data['ReviewContent']
+
+                new_review = Review(review_content=review, ISBN = Textbook.objects.get(pk = isbn_review))
+                new_review.save()
+        except:
+            return "Submit review exception"
