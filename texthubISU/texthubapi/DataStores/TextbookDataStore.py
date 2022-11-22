@@ -4,6 +4,7 @@ from itertools import chain
 from ..serializers import *
 from ..forms import AddISBN
 from django.shortcuts import render
+from ..forms import DeleteISBN
 
 class TextbookDataStore():
     # Get all data (rows) associated with an ISBN
@@ -22,27 +23,30 @@ class TextbookDataStore():
     def retrieve_all_textBooks():
         pass
 
-    def delete_ISBN():
-        pass
+    def delete_ISBN(request):
+            print('delete pls')
+            deleteisbn_form = DeleteISBN(request.POST)
+            if deleteisbn_form.is_valid():
+                isbn_from_form = deleteisbn_form.cleaned_data['ISBNToDelete']
+
+                Textbook.objects.filter(ISBN=isbn_from_form).delete()
 
     def add_ISBN(request):
         try:
-            if request.method == 'POST':
-                form = AddISBN(request.POST)
-                if form.is_valid():
-                    name = form.cleaned_data['name']
-                    isbn = form.cleaned_data['ISBN']
-                    author = form.cleaned_data['author']
+            print('add the isbn pls')
+            addisbn_form = AddISBN(request.POST)
+            if addisbn_form.is_valid():
+                name = addisbn_form.cleaned_data['name']
+                isbn = addisbn_form.cleaned_data['ISBNToAdd']
+                author = addisbn_form.cleaned_data['author']
 
-                    example1 = Textbook()
-                    example1.ISBN = isbn
-                    example1.author = author
-                    example1.name = name
-                    example1.view_count = 0
-                    example1.save()
-
-            form = AddISBN()
-            return render(request, 'addisbn.html', {"form": form})
+                example1 = Textbook()
+                example1.ISBN = isbn
+                example1.author = author
+                example1.name = name
+                example1.view_count = 0
+                print("add an isbn")
+                example1.save()
         except:
             return "Add admin failure"
 
