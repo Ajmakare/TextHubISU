@@ -8,7 +8,7 @@
 
     <button type="submit">Add textbook</button>
 </form>
-
+<br>
 <form method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
@@ -17,3 +17,13 @@
 
     <button type="submit">Delete textbook</button>
 </form>
+<br>
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ updateisbn_form }}
+
+    <button type="submit">Update textbook</button>
+</form>
+<br>

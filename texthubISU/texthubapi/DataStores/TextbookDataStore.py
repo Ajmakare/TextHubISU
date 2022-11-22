@@ -35,7 +35,6 @@ class TextbookDataStore():
 
     def add_ISBN(request):
         try:
-            print('add the isbn pls')
             addisbn_form = AddISBN(request.POST)
             if addisbn_form.is_valid():
                 name = addisbn_form.cleaned_data['name']
@@ -47,13 +46,24 @@ class TextbookDataStore():
                 example1.author = author
                 example1.name = name
                 example1.view_count = 0
-                print("add an isbn")
                 example1.save()
         except:
             return "Add ISBN exception"
 
-    def update_ISBN():
-        pass
+    def update_ISBN(request):
+        try:
+            updateisbn_form = UpdateISBN(request.POST)
+            if updateisbn_form.is_valid():
+                new_name = updateisbn_form.cleaned_data['name']
+                isbn = updateisbn_form.cleaned_data['ISBNToUpdate']
+                new_author = updateisbn_form.cleaned_data['author']
+
+                updated_textbook = Textbook.objects.get(pk=isbn)
+                updated_textbook.name = new_name
+                updated_textbook.author = new_author
+                updated_textbook.save()
+        except:
+            return "Update ISBN exception"
 
     def update_view_count():
         pass

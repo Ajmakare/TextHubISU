@@ -42,9 +42,12 @@ def admin(request):
                 TextbookController.add_ISBN_controller(request)
             if 'ISBNToDelete' in request.POST:
                 TextbookController.delete_ISBN_controller(request)
+            if 'ISBNToUpdate' in request.POST:
+                TextbookController.update_ISBN_controller(request)
         context = {
             'addisbn_form': AddISBN,
-            'deleteisbn_form': DeleteISBN
+            'deleteisbn_form': DeleteISBN,
+            'updateisbn_form':UpdateISBN
         }
         return render(request, 'admin.html', context=context)
     except:
