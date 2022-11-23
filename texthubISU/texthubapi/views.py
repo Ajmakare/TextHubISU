@@ -1,6 +1,7 @@
 from django.shortcuts import *
 from django.http import HttpResponse
 from rest_framework import generics
+from rest_framework import filters
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
@@ -19,7 +20,8 @@ class DoSearchView(generics.ListAPIView):
 
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
-        queryset = TextbookController.do_search_controller(isbn)
+        sort = self.kwargs['sort']
+        queryset = TextbookController.do_search_controller(isbn, sort)
         return queryset
 
 
@@ -32,7 +34,12 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
-                    response = redirect('textbooks/'+isbn_to_search+'/')
+                    if 'SortAlphabetical' in request.POST:
+                        response = redirect('textbooks/'+isbn_to_search+'/alpha')
+                    elif 'SortByPrice' in request.POST:
+                        response = redirect('textbooks/'+isbn_to_search+'/price')
+                    else:
+                        response = redirect('textbooks/'+isbn_to_search+'/default')
                     return response
         context = {
             'reviewisbn_form': ReviewISBN,

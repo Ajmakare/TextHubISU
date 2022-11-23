@@ -3,8 +3,8 @@ from ..ServiceFiles.TextbookService import *
 
 class TextbookController:
         
-    def do_search_controller(ISBN):
-        return TextbookDataStore.do_search(ISBN)
+    def do_search_controller(ISBN, sort):
+        return TextbookDataStore.do_search(ISBN, sort)
 
     def request_ISBN_controller():
         pass
