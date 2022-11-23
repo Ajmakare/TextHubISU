@@ -26,4 +26,13 @@
 
     <button type="submit">Update textbook</button>
 </form>
+
 <br>
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ populate_form }}
+
+    <button type="submit">Update The Database</button>
+</form>

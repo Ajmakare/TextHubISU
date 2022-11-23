@@ -1,2 +1,6 @@
+from ..DataStores.ScraperDatastore import *
+
+
 class ScraperController:
-    pass
+    def populateDB():
+        return ScraperDatastore.PopulateDatabase()

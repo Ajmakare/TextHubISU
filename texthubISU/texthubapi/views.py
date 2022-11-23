@@ -4,6 +4,13 @@ from rest_framework import generics
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
+<<<<<<< HEAD
+=======
+from texthubapi.Controllers.ScraperController import *
+from .DataStores.ScraperDatastore import *
+from .forms import *
+>>>>>>> main
+
 
 def index(request):
     return HttpResponse("Welcome to the ISU TextHub home page!")
@@ -17,6 +24,7 @@ class DoSearchView(generics.ListAPIView):
         isbn = self.kwargs['ISBN']
         queryset = TextbookController.do_search_controller(isbn)
         return queryset
+
 
 def home_view(request):
     try:
@@ -49,10 +57,14 @@ def admin(request):
                 TextbookController.delete_ISBN_controller(request)
             if 'ISBNToUpdate' in request.POST:
                 TextbookController.update_ISBN_controller(request)
+            if 'WantToPopulate' in request.POST:
+                print('got to call pop')
+                ScraperController.populateDB()
         context = {
             'addisbn_form': AddISBN,
             'deleteisbn_form': DeleteISBN,
-            'updateisbn_form':UpdateISBN
+            'updateisbn_form': UpdateISBN,
+            'populate_form': PopulateForm
         }
         return render(request, 'admin.html', context=context)
     except:

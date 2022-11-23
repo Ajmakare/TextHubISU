@@ -3,7 +3,16 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 
 # Create your models here.
-class Textbook(models.Model):
+class ReadingMaterials(models.Model):
+    ISBN = models.CharField(max_length=264, unique=True, primary_key=True)
+    author = models.CharField(max_length=264)
+    name = models.CharField(max_length=264)
+    view_count = models.IntegerField(default = 0) 
+
+    class Meta:
+        abstract = True
+
+class Textbook(ReadingMaterials):
     ISBN = models.CharField(max_length=264, unique=True, primary_key=True)
     author = models.CharField(max_length=264)
     name = models.CharField(max_length=264)
