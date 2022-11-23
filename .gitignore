@@ -106,9 +106,3 @@ server/dbConnect.env
 
 # venv folder
 venv/
-
-# pycache folders
-*.pyc
-
-#  __pycache__ folders
-__pycache__/

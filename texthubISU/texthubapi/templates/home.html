@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load rest_framework %}
+<html lang="en">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Using the formset -->
+    {{ reviewisbn_form }}
+
+    <button type="submit">Submit Review</button>
+</form>
+<<<<<<< HEAD
+=======
+
+>>>>>>> riley
+<br>
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ searchisbn_form }}
+
+    <button type="submit">Search ISBN</button>
+</form>
+<<<<<<< HEAD
+<br>
+=======
+<br>
+>>>>>>> riley
