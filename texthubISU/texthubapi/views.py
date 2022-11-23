@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import *
 from django.http import HttpResponse
 from rest_framework import generics
 
@@ -28,8 +28,15 @@ def home_view(request):
         if request.method == 'POST':
             if 'ISBNToReview' in request.POST:
                 TextbookController.submit_review_controller(request)
+            if 'ISBN' in  request.POST:
+                searchisbn_form = SearchISBN(request.POST)
+                if searchisbn_form.is_valid():
+                    isbn_to_search = searchisbn_form.cleaned_data['ISBN']
+                    response = redirect('textbooks/'+isbn_to_search+'/')
+                    return response
         context = {
             'reviewisbn_form': ReviewISBN,
+            'searchisbn_form': SearchISBN
         }
         return render(request, 'home.html', context=context)
     except:

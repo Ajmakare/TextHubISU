@@ -8,3 +8,14 @@
 
     <button type="submit">Submit Review</button>
 </form>
+
+<br>
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ searchisbn_form }}
+
+    <button type="submit">Search ISBN</button>
+</form>
+<br>
