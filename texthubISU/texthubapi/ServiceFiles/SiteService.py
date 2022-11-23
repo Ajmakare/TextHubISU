@@ -1,0 +1,2 @@
+class SiteService():
+    pass

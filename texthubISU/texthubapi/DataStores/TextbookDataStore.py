@@ -22,61 +22,30 @@ class TextbookDataStore():
     def retrieve_all_textBooks():
         pass
 
-    def delete_ISBN(request):
+    def delete_ISBN(isbn):
         try:
-            print('delete pls')
-            deleteisbn_form = DeleteISBN(request.POST)
-            if deleteisbn_form.is_valid():
-                isbn_from_form = deleteisbn_form.cleaned_data['ISBNToDelete']
-
-                Textbook.objects.filter(ISBN=isbn_from_form).delete()
+            Textbook.objects.filter(ISBN=isbn).delete()
         except:
             return "Delete ISBN exception"
 
-    def add_ISBN(request):
+    def add_ISBN(textbook):
         try:
-            addisbn_form = AddISBN(request.POST)
-            if addisbn_form.is_valid():
-                name = addisbn_form.cleaned_data['name']
-                isbn = addisbn_form.cleaned_data['ISBNToAdd']
-                author = addisbn_form.cleaned_data['author']
-
-                example1 = Textbook()
-                example1.ISBN = isbn
-                example1.author = author
-                example1.name = name
-                example1.view_count = 0
-                example1.save()
+            textbook.save()
         except:
             return "Add ISBN exception"
 
-    def update_ISBN(request):
+    def update_ISBN(textbook):
         try:
-            updateisbn_form = UpdateISBN(request.POST)
-            if updateisbn_form.is_valid():
-                new_name = updateisbn_form.cleaned_data['name']
-                isbn = updateisbn_form.cleaned_data['ISBNToUpdate']
-                new_author = updateisbn_form.cleaned_data['author']
-
-                updated_textbook = Textbook.objects.get(pk=isbn)
-                updated_textbook.name = new_name
-                updated_textbook.author = new_author
-                updated_textbook.save()
+            textbook.save()
         except:
             return "Update ISBN exception"
 
     def update_view_count():
         pass
 
-    def submit_review(request):
+    def submit_review(review):
         try:
-            reviewisbn_form = ReviewISBN(request.POST)
-            if reviewisbn_form.is_valid():
-                isbn_review = reviewisbn_form.cleaned_data['ISBNToReview']
-                review = reviewisbn_form.cleaned_data['ReviewContent']
-
-                new_review = Review(review_content=review, ISBN = Textbook.objects.get(pk = isbn_review))
-                new_review.save()
+            review.save()
         except:
             return "Submit review exception"
     # def add_isbn2 ():
