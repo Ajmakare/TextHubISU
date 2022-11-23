@@ -18,3 +18,6 @@ class UpdateISBN(forms.Form):
 class ReviewISBN(forms.Form):
     ISBNToReview = forms.CharField(label = "ISBN", max_length=264)
     ReviewContent = forms.CharField(label = "Review", max_length=264)
+
+class RequestISBN(forms.Form):
+    ISBNToRequest = forms.CharField(label = "ISBN", max_length=264)

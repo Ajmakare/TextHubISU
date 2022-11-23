@@ -3,15 +3,10 @@ from ..DataStores.TextbookDataStore import *
 class TextbookController:
         
     def do_search_controller(ISBN):
-            return TextbookDataStore.do_search(ISBN)
+        return TextbookDataStore.do_search(ISBN)
 
-<<<<<<< HEAD
-def request_ISBN_controller(ISBN):
+    def request_ISBN_controller(ISBN):
         return TextbookDataStore.request_ISBN(ISBN)
-=======
-    def request_ISBN_controller():
-        pass
->>>>>>> main
 
     def retrieve_all_textBooks_controller():
         pass

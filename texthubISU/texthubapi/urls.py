@@ -8,8 +8,3 @@ urlpatterns = [
     path('admin2', views.admin, name="admin"),
     path('home', views.home_view, name='home')
 ]
-<<<<<<< HEAD
-
-
-=======
->>>>>>> main

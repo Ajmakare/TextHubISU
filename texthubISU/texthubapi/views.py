@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from rest_framework import generics
 
 from .serializers import *
-from texthubapi.Controllers.TextbookController import do_search_controller
+from texthubapi.Controllers.TextbookController import *
 
 def index(request):
     return HttpResponse("Welcome to the ISU TextHub home page!")
