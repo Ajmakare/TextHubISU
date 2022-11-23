@@ -1,9 +1,10 @@
 from ..DataStores.TextbookDataStore import *
+from ..ServiceFiles.TextbookService import *
 
 class TextbookController:
         
     def do_search_controller(ISBN):
-            return TextbookDataStore.do_search(ISBN)
+        return TextbookDataStore.do_search(ISBN)
 
     def request_ISBN_controller():
         pass
@@ -12,16 +13,16 @@ class TextbookController:
         pass
 
     def delete_ISBN_controller(request):
-        return TextbookDataStore.delete_ISBN(request)
+        return TextbookService.delete_ISBN_service(request)
 
     def add_ISBN_controller(request):
-        return TextbookDataStore.add_ISBN(request)
+        return TextbookService.add_ISBN_service(request)
 
     def update_ISBN_controller(request):
-        return TextbookDataStore.update_ISBN(request)
+        return TextbookService.update_ISBN_service(request)
 
     def update_view_count_controller():
         pass
 
     def submit_review_controller(request):
-        return TextbookDataStore.submit_review(request)
+        return TextbookService.submit_review_service(request)
