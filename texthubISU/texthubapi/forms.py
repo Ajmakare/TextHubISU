@@ -27,5 +27,9 @@ class ReviewISBN(forms.Form):
     ReviewContent = forms.CharField(label="Review", max_length=264)
 
 
+class SubmitFeedback(forms.Form):
+    FeedbackContent = forms.CharField(label="Feedback", max_length=264)
+
+
 class PopulateForm(forms.Form):
     WantToPopulate = forms.BooleanField(label="choice")
