@@ -27,8 +27,7 @@ class TextbookDataStore():
                 new_request = Request(requestISBN=isbn_request)
                 new_request.save()
         except:
-            print("Could not request an ISBN")
-            pass
+            return "Could not request an ISBN"
 
     def retrieve_all_textBooks():
         pass
