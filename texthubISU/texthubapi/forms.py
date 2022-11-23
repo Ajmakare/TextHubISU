@@ -1,6 +1,9 @@
 from django import forms
 
 
+class SearchISBN(forms.Form):
+    ISBN = forms.CharField(label="ISBN", max_length=264)
+
 class AddISBN(forms.Form):
     ISBNToAdd = forms.CharField(label="ISBN", max_length=264)
     author = forms.CharField(label="author", max_length=264)
