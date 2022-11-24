@@ -10,6 +10,7 @@ from selenium.webdriver.chrome.options import Options
 import json
 from itertools import chain
 import os
+import PyPDF2
 
 
 service = Service(executable_path="texthubapi/scraperstuff/chromedriver.exe")
@@ -17,12 +18,36 @@ options = Options()
 options.add_argument('--headless')
 options.add_argument('--disable-gpu')  # Last I checked this was necessary.
 
-# class Scraper(ABC):  # the abstracgt class
-#     def scrapeItem(self):
-#         pass
+
+class Scraper(ABC):  # the abstracgt class
+    def scrapeItem():
+        pass
+
+    def obtainISBNs():
+        # reading the pdf in a binary mode "rb"
+        inputFile = open('texthubapi/scraperstuff/isutextbookspdf.pdf', 'rb')
+        reader = PyPDF2.PdfFileReader(inputFile)
+        listOfISBNs = []
+        repeatedWords = list()
+        for i in range(reader.numPages):
+            currentPage = reader.getPage(i)
+            text = currentPage.extract_text()
+            words = text.split(' ')
+
+            for j in range(len(words)):
+                # removing all hyphens before collecting isbn substring
+                curISBN = words[j].replace('-', '')
+                curIndex = curISBN.find("978")
+                curISBN = curISBN[curIndex:curIndex+13]
+                if (curIndex != -1 and not repeatedWords.__contains__(curISBN)):
+                    repeatedWords.append(curISBN)
+                    listOfISBNs.append(curISBN+"\n")
+
+        inputFile.close()
+        return listOfISBNs
 
 
-class ScrapeTextbook:
+class ScrapeTextbook(Scraper):
     def scrapeItem(isbn):
         price = " "
         author = " "
@@ -84,7 +109,7 @@ class ScrapeTextbook:
             new_textbook.name = textbook[2]
             new_textbook.view_count = 0
             print('about to save a mf textbookzz')
-            print (new_textbook.name)
+            print(new_textbook.name)
             new_textbook.save()
         # print (jsonpart)
         driver.quit()
@@ -97,14 +122,13 @@ class ScrapeTextbook:
 def main():
     # if sys.argv[1] == 'pleasejustwork':
 
-    file1 = open('texthubapi/scraperstuff/isbns.txt', 'r')
-    Lines = file1.readlines()
+    isbns = Scraper.obtainISBNs()
     count = 0
 
     # Strips the newline character
     # file2 = open('output.json', 'w')
     # file2.writelines('[')
-    for line in Lines:
+    for line in isbns:
         count += 1
 
         output = ScrapeTextbook.scrapeItem(line.strip())
