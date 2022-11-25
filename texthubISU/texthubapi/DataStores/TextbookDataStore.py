@@ -18,14 +18,9 @@ class TextbookDataStore():
             pass
     
     #send an ISBN to be listed on the admin page
-    def request_ISBN(request):
+    def request_ISBN(request_isbn):
         try:
-            requestisbn_form = Request(request.POST)
-            if requestisbn_form.is_valid():
-                isbn_request = requestisbn_form.cleaned_data['RequestedISBN']
-
-                new_request = Request(requestISBN=isbn_request)
-                new_request.save()
+            request_isbn.save()
         except:
             return "Could not request an ISBN"
 

@@ -4,12 +4,9 @@ from rest_framework import generics
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
-<<<<<<< HEAD
-=======
 from texthubapi.Controllers.ScraperController import *
 from .DataStores.ScraperDatastore import *
 from .forms import *
->>>>>>> main
 
 
 def index(request):
@@ -19,13 +16,13 @@ def index(request):
 # example url: http://127.0.0.1:8000/textbooks/?isbn=testisbn/
 class DoSearchView(generics.ListAPIView):
     serializer_class = TextbookSerializer
-
+    
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         queryset = TextbookController.do_search_controller(isbn)
         return queryset
 
-
+    
 def home_view(request):
     try:
         if request.method == 'POST':
@@ -35,7 +32,7 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
-                    response = redirect('textbooks/'+isbn_to_search+'/')
+                    response = redirect('textbooks/'+isbn_to_search+'/') 
                     return response
         context = {
             'reviewisbn_form': ReviewISBN,
@@ -69,3 +66,15 @@ def admin(request):
         return render(request, 'admin.html', context=context)
     except:
         return "Admin page exception"
+
+
+def sendRequest_view(request):
+    try:
+        if request.method == 'POST':
+            if 'ISBNToRequest' in request.POST:
+                TextbookController.request_ISBN_controller(request)
+        return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
+    except:
+        return "Could not request an ISBN"
+
+

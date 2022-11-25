@@ -7,7 +7,7 @@ class TextbookController:
         return TextbookDataStore.do_search(ISBN)
 
     def request_ISBN_controller(ISBN):
-        return TextbookDataStore.request_ISBN(ISBN)
+        return TextbookService.request_ISBN_service(ISBN)
 
     def retrieve_all_textBooks_controller():
         pass

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% load rest_framework %}
+<html lang="en">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Using the formset -->
+    {{ requestisbn_form }}
+
+    <button type="Request ISBN">Submit Request</button>
+</form>
+<br>
