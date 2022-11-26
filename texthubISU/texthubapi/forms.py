@@ -8,8 +8,8 @@ class SearchISBN(forms.Form):
 
 class AddISBN(forms.Form):
     ISBNToAdd = forms.CharField(label="ISBN to Add", max_length=264)
-    author = forms.CharField(label="author", max_length=264)
-    name = forms.CharField(label="name", max_length=264)
+    name = forms.CharField(label="Name", max_length=264)
+    author = forms.CharField(label="Author", max_length=264)
 
 
 
@@ -19,8 +19,8 @@ class DeleteISBN(forms.Form):
 
 class UpdateISBN(forms.Form):
     ISBNToUpdate = forms.CharField(label="ISBN to Update", max_length=264)
-    author = forms.CharField(label="author", max_length=264)
-    name = forms.CharField(label="name", max_length=264)
+    name = forms.CharField(label="Name", max_length=264)
+    author = forms.CharField(label="Author", max_length=264)
 
 
 class ReviewISBN(forms.Form):

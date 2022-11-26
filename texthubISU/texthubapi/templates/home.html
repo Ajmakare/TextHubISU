@@ -1,10 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 {% load rest_framework %}
 <html lang="en">
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     </head>
-<h1>Texthub ISU Home Page</h1> 
+
+<h1 style = "text-decoration: underline;font-weight: bolder;">
+    Texthub ISU Home Page
+    <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+</h1>
+
 {% if messages %}
     {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert" style="color: red;">{{ message }}</div>
