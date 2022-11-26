@@ -4,7 +4,7 @@ from ..models import Request
 from itertools import chain
 from ..serializers import *
 from ..forms import *
-from django.shortcuts import render
+from django.shortcuts import *
 from django.db.models import Prefetch
 from django.db.models.functions import Lower
 
@@ -21,7 +21,7 @@ class TextbookDataStore():
                 return queryset
             else:
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
-                return queryset
+            return queryset
 
         except:
             print("Could not retrieve textbooks with ISBN: " + param_isbn)
