@@ -7,5 +7,5 @@ urlpatterns = [
     path('', include('rest_framework.urls', namespace='rest_framework')),
     path('admin2', views.admin, name="admin"),
     path('home', views.home_view, name='home'),
-    path('sendRequest/', views.sendRequest_view, name = "sendrequest")
+    path('sendrequest/', views.sendRequest_view, name = "sendrequest")
 ]

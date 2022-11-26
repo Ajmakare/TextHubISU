@@ -18,7 +18,7 @@ def index(request):
 # example url: http://127.0.0.1:8000/textbooks/?isbn=testisbn/
 class DoSearchView(generics.ListAPIView):
     serializer_class = TextbookSerializer
-    
+    allow_empty = False
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
@@ -38,6 +38,8 @@ def home_view(request):
                     if searchisbn_form.cleaned_data['SortAlphabetical'] == True and searchisbn_form.cleaned_data['SortByPrice'] == True:
                         messages.error(request, 'Please select only 1 sort method')
                         return redirect('home')
+                    elif not Textbook.objects.filter(pk=isbn_to_search).exists():
+                        return redirect('sendrequest')
                     elif 'SortAlphabetical' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/alpha')
                     elif 'SortByPrice' in request.POST:
