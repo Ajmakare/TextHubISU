@@ -1,5 +1,6 @@
 from ..serializers import *
-from ..models import *
+from ..models import Textbook
+from ..models import Request
 from itertools import chain
 from ..serializers import *
 from ..forms import *
@@ -26,9 +27,13 @@ class TextbookDataStore():
         except:
             print("Could not retrieve textbooks with ISBN: " + param_isbn)
             pass
-
-    def request_ISBN():
-        pass
+    
+    #send an ISBN to be listed on the admin page
+    def request_ISBN(request_isbn):
+        try:
+            request_isbn.save()
+        except:
+            return "Could not request an ISBN"
 
     def retrieve_all_textBooks():
         try:

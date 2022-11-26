@@ -57,3 +57,11 @@ class TextbookService():
             return "Invalid form"
 
 
+    def request_ISBN_service(request):
+        requestisbn_form = RequestISBN(request.POST)
+        if requestisbn_form.is_valid():
+            isbn_request = requestisbn_form.cleaned_data['ISBNToRequest']
+
+            new_request = Request(requestISBN = isbn_request)
+            TextbookDataStore.request_ISBN(new_request)
+

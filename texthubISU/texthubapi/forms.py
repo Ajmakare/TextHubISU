@@ -34,3 +34,6 @@ class SubmitFeedback(forms.Form):
 
 class PopulateForm(forms.Form):
     WantToPopulate = forms.BooleanField(label="choice")
+
+class RequestISBN(forms.Form):
+    ISBNToRequest = forms.CharField(label ="ISBN", max_length=264)

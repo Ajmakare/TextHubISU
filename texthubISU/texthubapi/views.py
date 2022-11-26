@@ -18,14 +18,14 @@ def index(request):
 # example url: http://127.0.0.1:8000/textbooks/?isbn=testisbn/
 class DoSearchView(generics.ListAPIView):
     serializer_class = TextbookSerializer
-
+    
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
         return queryset
 
-
+    
 def home_view(request):
     try:
         if request.method == 'POST':
@@ -35,12 +35,16 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
+<<<<<<< HEAD
                     if 'SortAlphabetical' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/alpha')
                     elif 'SortByPrice' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/price')
                     else:
                         response = redirect('textbooks/'+isbn_to_search+'/default')
+=======
+                    response = redirect('textbooks/'+isbn_to_search+'/') 
+>>>>>>> origin/brad
                     return response
             if 'FeedbackContent' in request.POST:
                 SiteController.submit_feedback_controller(request)
@@ -77,3 +81,15 @@ def admin(request):
         return render(request, 'admin.html', context=context)
     except:
         return "Admin page exception"
+
+
+def sendRequest_view(request):
+    try:
+        if request.method == 'POST':
+            if 'ISBNToRequest' in request.POST:
+                TextbookController.request_ISBN_controller(request)
+        return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
+    except:
+        return "Could not request an ISBN"
+
+
