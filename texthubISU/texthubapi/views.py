@@ -30,7 +30,11 @@ def home_view(request):
     try:
         if request.method == 'POST':
             if 'ISBNToReview' in request.POST:
-                TextbookController.submit_review_controller(request)
+                try:
+                    TextbookController.submit_review_controller(request)
+                    messages.success(request, 'Submit review success!')
+                except:
+                    messages.error(request, 'Submit review failed :(')
             if 'ISBN' in  request.POST:
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
@@ -53,7 +57,11 @@ def home_view(request):
                         response = redirect('textbooks/'+isbn_to_search+'/default')
                     return response
             if 'FeedbackContent' in request.POST:
-                SiteController.submit_feedback_controller(request)
+                try:
+                    SiteController.submit_feedback_controller(request)
+                    messages.success(request, 'Submit feedback success!')
+                except:
+                    messages.error(request, 'Submit feedback failed :(')
         context = {
             'reviewisbn_form': ReviewISBN,
             'searchisbn_form': SearchISBN,
@@ -70,11 +78,23 @@ def admin(request):
     try:
         if request.method == 'POST':
             if 'ISBNToAdd' in request.POST:
-                TextbookController.add_ISBN_controller(request)
+                try:
+                    TextbookController.add_ISBN_controller(request)
+                    messages.success(request, 'ISBN Added to database!')
+                except:
+                    messages.error(request, 'Could not add ISBN to database!')    
             if 'ISBNToDelete' in request.POST:
-                TextbookController.delete_ISBN_controller(request)
+                try:
+                    TextbookController.delete_ISBN_controller(request)
+                    messages.success(request, 'ISBN deleted from database!')
+                except:
+                    messages.error(request, 'Could not delete ISBN from database!')    
             if 'ISBNToUpdate' in request.POST:
-                TextbookController.update_ISBN_controller(request)
+                try:
+                    TextbookController.update_ISBN_controller(request)
+                    messages.success(request, 'ISBN updated in database!')
+                except:
+                    messages.error(request, 'Could not update ISBN in database!')   
             if 'WantToPopulate' in request.POST:
                 print('got to call pop')
                 ScraperController.populateDB()
@@ -93,7 +113,11 @@ def sendRequest_view(request):
     try:
         if request.method == 'POST':
             if 'ISBNToRequest' in request.POST:
-                TextbookController.request_ISBN_controller(request)
+                try:
+                    TextbookController.request_ISBN_controller(request)
+                    messages.success(request, 'Submit request success!')
+                except:
+                    messages.error(request, 'Submit request failed :(')
         return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
     except:
         return "Could not request an ISBN"

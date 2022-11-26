@@ -7,6 +7,11 @@
     <h1 style = "text-decoration: underline;font-weight: bolder;">Texthub ISU Admin Page
         <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
     </h1>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
