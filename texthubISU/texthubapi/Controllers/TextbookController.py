@@ -10,7 +10,8 @@ class TextbookController:
         pass
 
     def retrieve_all_textBooks_controller():
-        pass
+        return TextbookDataStore.retrieve_all_textBooks()
+        # pass
 
     def delete_ISBN_controller(request):
         return TextbookService.delete_ISBN_service(request)

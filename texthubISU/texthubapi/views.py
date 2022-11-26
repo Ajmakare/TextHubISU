@@ -5,6 +5,7 @@ from rest_framework import filters
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
+from texthubapi.Controllers.SiteController import *
 from texthubapi.Controllers.ScraperController import *
 from .DataStores.ScraperDatastore import *
 from .forms import *
@@ -41,9 +42,12 @@ def home_view(request):
                     else:
                         response = redirect('textbooks/'+isbn_to_search+'/default')
                     return response
+            if 'FeedbackContent' in request.POST:
+                SiteController.submit_feedback_controller(request)
         context = {
             'reviewisbn_form': ReviewISBN,
-            'searchisbn_form': SearchISBN
+            'searchisbn_form': SearchISBN,
+            'submitfeedback_form': SubmitFeedback
         }
         return render(request, 'home.html', context=context)
     except:
