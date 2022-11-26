@@ -13,7 +13,6 @@ class TextbookDataStore():
     # We want to retrieve all site info for a single isbn to display to user
     def do_search(param_isbn, sort):
         try:
-            print(sort)
             if sort == 'alpha':
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by(Lower('url')))).all()
                 return queryset

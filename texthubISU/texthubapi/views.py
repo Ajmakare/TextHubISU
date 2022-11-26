@@ -1,5 +1,5 @@
 from django.shortcuts import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework import filters
 
@@ -9,7 +9,7 @@ from texthubapi.Controllers.SiteController import *
 from texthubapi.Controllers.ScraperController import *
 from .DataStores.ScraperDatastore import *
 from .forms import *
-
+from django.contrib import messages #import messages
 
 def index(request):
     return HttpResponse("Welcome to the ISU TextHub home page!")
@@ -35,13 +35,15 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
-                    if 'SortAlphabetical' in request.POST:
+                    if searchisbn_form.cleaned_data['SortAlphabetical'] == True and searchisbn_form.cleaned_data['SortByPrice'] == True:
+                        messages.error(request, 'Please select only 1 sort method')
+                        return redirect('home')
+                    elif 'SortAlphabetical' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/alpha')
                     elif 'SortByPrice' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/price')
                     else:
                         response = redirect('textbooks/'+isbn_to_search+'/default')
-                    response = redirect('textbooks/'+isbn_to_search+'/') 
                     return response
             if 'FeedbackContent' in request.POST:
                 SiteController.submit_feedback_controller(request)
