@@ -35,15 +35,20 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
+                    # If a user has both sort boxes checked, error must be thrown
                     if searchisbn_form.cleaned_data['SortAlphabetical'] == True and searchisbn_form.cleaned_data['SortByPrice'] == True:
                         messages.error(request, 'Please select only 1 sort method')
                         return redirect('home')
+                    # If the user searches an ISBN not in our database, redirect to submit request view
                     elif not Textbook.objects.filter(pk=isbn_to_search).exists():
                         return redirect('sendrequest')
+                    # Return results alphabetically
                     elif 'SortAlphabetical' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/alpha')
+                    # Return results by price
                     elif 'SortByPrice' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/price')
+                    # Else, return results by default (ID order)
                     else:
                         response = redirect('textbooks/'+isbn_to_search+'/default')
                     return response
