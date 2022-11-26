@@ -7,6 +7,10 @@ from django.shortcuts import render
 from ..DataStores.TextbookDataStore import *
 
 class TextbookService():
+
+    def retrieve_all_textBooks_service():
+        return TextbookDataStore.retrieve_all_textBooks()
+
     def delete_ISBN_service(request):
         deleteisbn_form = DeleteISBN(request.POST)
         if deleteisbn_form.is_valid():

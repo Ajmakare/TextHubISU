@@ -19,4 +19,9 @@ class SiteService():
             SiteDatastore.submit_feedback(example)
         else:
             return "Form invalid"
-    # pass
+
+    # planning on using this when searching for textbooks is done :D
+    # def update_ISBN_viewcount_service(request):
+    #         TextbookDataStore.update_ISBN_viewcount(isbn)
+    #     else:
+    #         return "Form invalid"
