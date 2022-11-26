@@ -17,3 +17,7 @@ class TextbookTest(TestCase):
         response = self.client.post('/home', data = {'ISBNToReview': 'testisbn','ReviewContent':'12020424' })
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    def test_update_ISBN_pass(self):
+        response = self.client.post('/admin2', data = {'ISBNToUpdate': 'testisbn','name':'new name', 'author': 'new author'})
+        self.assertEqual(response.status_code, HTTPStatus.OK) 
+

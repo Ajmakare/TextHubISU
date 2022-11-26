@@ -5,6 +5,8 @@ from ..serializers import *
 from ..forms import *
 from django.shortcuts import render
 from ..DataStores.TextbookDataStore import *
+from django.http import HttpResponse, HttpResponseBadRequest
+
 
 class TextbookService():
     def delete_ISBN_service(request):
@@ -37,11 +39,12 @@ class TextbookService():
             new_name = updateisbn_form.cleaned_data['name']
             isbn = updateisbn_form.cleaned_data['ISBNToUpdate']
             new_author = updateisbn_form.cleaned_data['author']
-
-            updated_textbook = Textbook.objects.get(pk=isbn)
-            updated_textbook.name = new_name
-            updated_textbook.author = new_author  
-            TextbookDataStore.update_ISBN(updated_textbook)    
+            if Textbook.objects.filter(pk=isbn).exists():
+                updated_textbook = Textbook.objects.get(pk=isbn)
+                print(str(updated_textbook))
+                updated_textbook.name = new_name
+                updated_textbook.author = new_author  
+                TextbookDataStore.update_ISBN(updated_textbook)    
         else:
             return "Form invalid"  
     

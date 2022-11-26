@@ -1,5 +1,5 @@
 from django.shortcuts import *
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework import filters
 
