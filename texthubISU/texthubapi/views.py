@@ -35,16 +35,13 @@ def home_view(request):
                 searchisbn_form = SearchISBN(request.POST)
                 if searchisbn_form.is_valid():
                     isbn_to_search = searchisbn_form.cleaned_data['ISBN']
-<<<<<<< HEAD
                     if 'SortAlphabetical' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/alpha')
                     elif 'SortByPrice' in request.POST:
                         response = redirect('textbooks/'+isbn_to_search+'/price')
                     else:
                         response = redirect('textbooks/'+isbn_to_search+'/default')
-=======
                     response = redirect('textbooks/'+isbn_to_search+'/') 
->>>>>>> origin/brad
                     return response
             if 'FeedbackContent' in request.POST:
                 SiteController.submit_feedback_controller(request)
