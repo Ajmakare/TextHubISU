@@ -1,6 +1,29 @@
+{% load static %}
 <!DOCTYPE html>
 {% load rest_framework %}
 <html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </head>
+
+<h1 style = "text-decoration: underline;font-weight: bolder;">
+    Texthub ISU Home Page
+    <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+</h1>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <!-- Using the formset -->
+    {{ searchisbn_form }}
+    <button type="submit">Search ISBN</button>
+</form>
+<br>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
@@ -14,8 +37,8 @@
 
     {% csrf_token %}
     <!-- Using the formset -->
-    {{ searchisbn_form }}
+    {{ submitfeedback_form }}
 
-    <button type="submit">Search ISBN</button>
+    <button type="submit">Submit Feedback</button>
 </form>
 <br>

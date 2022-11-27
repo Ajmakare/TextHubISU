@@ -3,14 +3,15 @@ from ..ServiceFiles.TextbookService import *
 
 class TextbookController:
         
-    def do_search_controller(ISBN):
-        return TextbookDataStore.do_search(ISBN)
+    def do_search_controller(ISBN, sort):
+        return TextbookDataStore.do_search(ISBN, sort)
 
     def request_ISBN_controller(ISBN):
         return TextbookService.request_ISBN_service(ISBN)
 
     def retrieve_all_textBooks_controller():
-        pass
+        return TextbookDataStore.retrieve_all_textBooks()
+        # pass
 
     def delete_ISBN_controller(request):
         return TextbookService.delete_ISBN_service(request)
