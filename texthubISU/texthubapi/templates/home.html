@@ -12,7 +12,7 @@
         <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
     </h1>
     
-<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px">
+<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
     {% if messages %}
     {% for message in messages %}
     <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
