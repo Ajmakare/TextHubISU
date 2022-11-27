@@ -1,5 +1,7 @@
 import os
 import subprocess
+import threading
+from ..scraperstuff.scraper import main
 # texthubISU\scraperstuff\scraper.py
 # C:\Users\firef\Documents\VsCodeStuff\textbookscraper\theProj\TextHubISU\texthubISU\scraperstuff\scraper.py
 
@@ -7,7 +9,11 @@ import subprocess
 class ScraperDatastore():
     def PopulateDatabase():
         print("calling the process")
-        os.system("python texthubapi\scraperstuff\scraper.py pleasejustwork")
+        #os.system("python texthubapi\scraperstuff\scraper.py pleasejustwork")
+        example = threading.Thread(target=main)
+        example.start()
+        example.join()
+
         #subprocess.run("python scraperstuff\scraper.py")
 
         #outputString = scrapeAmazonBook('9780446310789')

@@ -1,31 +1,49 @@
+{% load static %}
 <!DOCTYPE html>
 {% load rest_framework %}
 <html lang="en">
-<form method="POST" enctype="multipart/form-data">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </head>
+    {% load crispy_forms_tags %}  
+    <h1 style = "font-weight: bolder;text-align: center;margin-top: 20px;">
+        TEXTHUB ISU
+        <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+    </h1>
+    
+<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    <form id = 'search_form' method="POST" enctype="multipart/form-data">
+    
+        {% csrf_token %}
+        <!-- Using the formset -->
+        {{ searchisbn_form|crispy }}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Using the formset -->
+        {{ reviewisbn_form|crispy }}
+        
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+    </form>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+
     {% csrf_token %}
-
     <!-- Using the formset -->
-    {{ reviewisbn_form }}
-
-    <button type="submit">Submit Review</button>
+    {{ submitfeedback_form|crispy }}
+    
+    <button type="submit" class="btn btn-primary">Submit Feedback</button>
 </form>
 <br>
-<form method="POST" enctype="multipart/form-data">
-
-    {% csrf_token %}
-    <!-- Using the formset -->
-    {{ searchisbn_form }}
-
-    <button type="submit">Search ISBN</button>
-</form>
-<br>
-<form method="POST" enctype="multipart/form-data">
-
-    {% csrf_token %}
-    <!-- Using the formset -->
-    {{ submitfeedback_form }}
-
-    <button type="submit">Submit Feedback</button>
-</form>
-<br>
-
+</div>
+<div style = "text-align: center; padding:10px">
+    <a href="/admin2">Go to admin page</a>
+</div>

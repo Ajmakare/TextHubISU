@@ -1,38 +1,67 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </head>
+    {% load crispy_forms_tags %}  
+    <h1 style = "font-weight: bolder;text-align: center;margin-top: 20px;">Texthub ISU Admin Page
+        <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+    </h1>
+    
+    {% if user.is_authenticated %}
+    {% block content %}
+<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Using the formset -->
+        {{ addisbn_form|crispy }}
+        
+        <button type="submit" class="btn btn-primary">Add Textbook</button>
+    </form>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+        
+        {% csrf_token %}
+        <!-- Using the formset -->
+        {{ deleteisbn_form|crispy  }}
+        
+        <button type="submit" class="btn btn-primary">Delete Textbook</button>
+    </form>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+        
+        {% csrf_token %}
+        <!-- Using the formset -->
+        {{ updateisbn_form|crispy  }}
+        
+        <button type="submit" class="btn btn-primary">Update Textbook</button>
+    </form>
+    
+    <br>
+    <br>
+    <form method="POST" enctype="multipart/form-data">
+    
+        {% csrf_token %}
+        <!-- Using the formset -->
+        {{ populate_form|crispy }}
+    
+        <button type="submit" class="btn btn-primary">Scrape and Populate Database</button>
+    </form>
+    </div>  
+    <div style = "text-align: center; padding:10px">
+        <a href="/home">Go to home page</a>
+    </div>
+{% endblock %}
+{% else %}
 
-    <!-- Using the formset -->
-    {{ addisbn_form }}
-
-    <button type="submit">Add textbook</button>
-</form>
-<br>
-<form method="POST" enctype="multipart/form-data">
-
-    {% csrf_token %}
-    <!-- Using the formset -->
-    {{ deleteisbn_form }}
-
-    <button type="submit">Delete textbook</button>
-</form>
-<br>
-<form method="POST" enctype="multipart/form-data">
-
-    {% csrf_token %}
-    <!-- Using the formset -->
-    {{ updateisbn_form }}
-
-    <button type="submit">Update textbook</button>
-</form>
-
-<br>
-<form method="POST" enctype="multipart/form-data">
-
-    {% csrf_token %}
-    <!-- Using the formset -->
-    {{ populate_form }}
-
-    <button type="submit">Update The Database</button>
-</form>
+<div style = "text-align: center;">
+    <a href="/adminstuff/login">Login To Execute Admin Commands</a>
+</div>
+{% endif %}
