@@ -4,12 +4,17 @@
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     </head>
-<h1>ISBN not found... <br>
+    {% load crispy_forms_tags %}  
+
+
+<h1 style = "font-weight: bolder;text-align: center ;margin-top: 20px;">ISBN not found... <br>
     Would you like to request the ISBN be added to our site?</h1>
 <br>
-{% if messages %}
+
+<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
+    {% if messages %}
     {% for message in messages %}
-        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
     {% endfor %}
 {% endif %}
 <form method="POST" >
@@ -19,4 +24,8 @@
         Submit Request
     </button>
 </form>
+</div>
+<div style = "text-align: center;padding: 20px;">
+    <a href="/home">Return to home</a>
+</div>
 <br>

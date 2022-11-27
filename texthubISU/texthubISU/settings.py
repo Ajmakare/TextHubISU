@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-6a#t2x_%&lf%1u5#=ew5i-^0^$(@c@ix7l_r*t8^u_n)w485g&
 DEBUG = True
 
 ALLOWED_HOSTS = []
-STATIC_URL = '/static/' 
+STATIC_URL = '/static/'
 
 # Application definition
 
@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -130,4 +133,6 @@ MESSAGE_TAGS = {message_constants.DEBUG: 'debug',
                 message_constants.INFO: 'info',
                 message_constants.SUCCESS: 'success',
                 message_constants.WARNING: 'warning',
-                message_constants.ERROR: 'danger',}
+                message_constants.ERROR: 'danger', }
+
+LOGIN_REDIRECT_URL = '/admin2'
