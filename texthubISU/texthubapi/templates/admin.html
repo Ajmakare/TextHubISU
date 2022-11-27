@@ -9,6 +9,8 @@
         <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
     </h1>
     
+    {% if user.is_authenticated %}
+    {% block content %}
 <div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
     {% if messages %}
     {% for message in messages %}
@@ -46,9 +48,10 @@
     <form method="POST" enctype="multipart/form-data">
         
         {% csrf_token %}
-    <!-- Using the formset -->
-    {{ populate_form|crispy  }}
-    
-    <button type="submit" class="btn btn-primary">Update the Database</button>
-</form>
-</div>
+
+
+{% endblock %}
+{% else %}
+
+<a href="/adminstuff/login">Login To Execute Admin Commands</a>
+{% endif %}
