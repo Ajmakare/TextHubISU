@@ -1,0 +1,9 @@
+<br>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Using the formset -->
+    {{ form }}
+
+    <button type="submit">Login</button>
+</form>
