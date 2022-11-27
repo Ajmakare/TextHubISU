@@ -45,6 +45,7 @@ def home_view(request):
                         return redirect('home')
                     # If the user searches an ISBN not in our database, redirect to submit request view
                     elif not Textbook.objects.filter(pk=isbn_to_search).exists():
+                        request.session['isbn_to_request'] = request.POST
                         return redirect('sendrequest')
                     # Return results alphabetically
                     elif 'SortAlphabetical' in request.POST:
@@ -112,12 +113,13 @@ def admin(request):
 def sendRequest_view(request):
     try:
         if request.method == 'POST':
-            if 'ISBNToRequest' in request.POST:
-                try:
-                    TextbookController.request_ISBN_controller(request)
-                    messages.success(request, 'Submit request success!')
-                except:
-                    messages.error(request, 'Submit request failed :(')
+            if 'RequestButton' in request.POST:
+                    try:
+                        isbn_to_request = request.session.get('isbn_to_request')
+                        TextbookController.request_ISBN_controller(isbn_to_request)
+                        messages.success(request, 'Submit request success!')
+                    except:
+                        messages.error(request, 'Submit request failed :(')
         return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
     except:
         return "Could not request an ISBN"
