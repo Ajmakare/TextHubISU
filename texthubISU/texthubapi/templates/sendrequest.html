@@ -12,12 +12,11 @@
         <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
     {% endfor %}
 {% endif %}
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" >
     {% csrf_token %}
 
-    <!-- Using the formset -->
-    {{ requestisbn_form }}
-
-    <button type="Request ISBN">Submit Request</button>
+    <button class="Request ISBN" name="RequestButton" value="submit">
+        Submit Request
+    </button>
 </form>
 <br>
