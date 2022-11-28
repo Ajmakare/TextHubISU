@@ -27,6 +27,7 @@ class DoSearchView(ListView):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
+        # TextbookController.update_view_count_controller(isbn)
         return queryset
         
 def home_view(request):
@@ -62,6 +63,7 @@ def home_view(request):
                     else:
                         response = redirect(
                             'textbooks/'+isbn_to_search+'/default')
+                    TextbookDataStore.update_view_count(isbn_to_search)
                     return response
             if 'FeedbackContent' in request.POST:
                 try:

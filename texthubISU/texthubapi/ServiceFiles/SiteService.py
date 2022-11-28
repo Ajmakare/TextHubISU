@@ -19,4 +19,3 @@ class SiteService():
             SiteDatastore.submit_feedback(example)
         else:
             return "Form invalid"
-    # pass
