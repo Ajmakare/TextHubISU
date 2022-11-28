@@ -14,8 +14,5 @@ admin.site.register(Review)
 from .models import Feedback
 admin.site.register(Feedback)
 
-from .models import Admin
-admin.site.register(Admin)
-
 from .models import Request
 admin.site.register(Request)
