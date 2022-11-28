@@ -22,8 +22,9 @@ class TextbookController:
     def update_ISBN_controller(request):
         return TextbookService.update_ISBN_service(request)
 
-    def update_view_count_controller():
-        pass
+    def update_view_count_controller(ISBN):
+        return TextbookDataStore.update_view_count(ISBN)
+        # pass
 
     def submit_review_controller(request):
         return TextbookService.submit_review_service(request)

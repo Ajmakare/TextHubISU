@@ -3,7 +3,3 @@ class SiteController:
         
     def submit_feedback_controller(request):
         return SiteService.submit_Feedback_service(request)
-        # pass
-
-    def update_ISBN_viewcount_controller(request):
-        pass

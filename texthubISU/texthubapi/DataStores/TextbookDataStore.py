@@ -5,7 +5,7 @@ from itertools import chain
 from ..serializers import *
 from ..forms import *
 from django.shortcuts import *
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F
 from django.db.models.functions import Lower
 
 class TextbookDataStore():
@@ -21,6 +21,8 @@ class TextbookDataStore():
                 return queryset
             else:
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
+            
+            TextbookDataStore.update_view_count(param_isbn)
             return queryset
 
         except:
@@ -60,8 +62,15 @@ class TextbookDataStore():
         except:
             return "Update ISBN exception"
 
-    def update_view_count():
-        pass
+    def update_view_count(isbn):
+        try:
+            Textbook.objects.filter(ISBN=isbn).update(view_count=F('view_count') + 1)
+            print("View count updated")
+            print(len(Textbook.objects.filter(ISBN=isbn)))
+            # return "View count updated"
+        except:
+            return "Update view count exception"
+        # pass
 
     def submit_review(review):
         try:

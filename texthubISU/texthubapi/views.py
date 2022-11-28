@@ -25,6 +25,7 @@ class DoSearchView(generics.ListAPIView):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
+        # TextbookController.update_view_count_controller(isbn)
         return queryset
 
 
