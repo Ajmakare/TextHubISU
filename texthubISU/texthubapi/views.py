@@ -134,21 +134,6 @@ def sendRequest_view(request):
     except:
         return "Could not request an ISBN"
 
-
-# def retrieveView(request):
-#     print(request.POST)
-#     print(request.method)
-#     try:
-#         if request.method == 'GET':
-#             try:
-#                 TextbookController.retrieve_all_textBooks_controller()
-#                 messages.success(request, 'Retrieve success!')
-#             except:
-#                 messages.error(request, 'Retrieve failed :(')
-#         return render(request, 'retrieve.html', context={'retrievetextbooks_form': RetrieveTextbooks})
-#     except:
-#         return "Could not retreive textbooks"
-
 class retrieveView(ListView):
     allow_empty = False
     template_name = 'retrieve.html'

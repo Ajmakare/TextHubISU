@@ -8,10 +8,6 @@ class SearchISBN(forms.Form):
     SortByPrice = forms.BooleanField(
         label="Sort Sources by Price (Low to high)", required=False)
 
-class RetrieveTextbooks(forms.Form):
-    RetrieveCheck = True
-
-
 class AddISBN(forms.Form):
     ISBNToAdd = forms.CharField(label="ISBN to Add", max_length=264)
     name = forms.CharField(label="Name", max_length=264)
