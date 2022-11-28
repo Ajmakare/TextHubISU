@@ -46,3 +46,7 @@ class RequestISBN(forms.Form):
 class Login(forms.Form):
     Username = forms.CharField(label="username", max_length=264)
     Password = forms.CharField(label="password", max_length=264)
+
+class AddAdmin(forms.Form):
+    Username = forms.CharField(label="username", max_length=264)
+    Password = forms.CharField(label="password", max_length=264)
