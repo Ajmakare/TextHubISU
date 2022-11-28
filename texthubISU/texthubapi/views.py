@@ -28,7 +28,7 @@ class DoSearchView(ListView):
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
         return queryset
-
+        
 def home_view(request):
     try:
         if request.method == 'POST':
