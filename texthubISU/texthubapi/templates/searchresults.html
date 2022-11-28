@@ -1,10 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
 <body>
     <div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888; text-align: center;">
-        <h1>Search Results:</h1>
+        <h1 style = "font-weight: bolder;text-align: center;margin-top: 20px;">
+            SEARCH RESULTS
+            <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+        </h1>
     {% for textbook in textbooks.bookinfos %}
       <h3>ISBN: {{ textbook.ISBN }} </h3>
       <h3>Name of book: {{ textbook.name}} </h3>
@@ -14,10 +19,11 @@
       <div style = "text-align: center; padding:10px">
         <a href="/home">Go to home page</a>
     </div>
-      <h2>Prices From Different Sources: </h2>
+      <h2 style = "font-weight: bolder;">Prices From Different Sources: </h2>
       {% for source in textbooks.sources %}
-      <p>Price: ${{ source.price }} </p>
-      <p>URL: {{ source.url}} </p>
+      <br>
+      <h3>Price: ${{ source.price }} </h3>
+      <h3>URL: {{ source.url}} </h3>
       <br>
       {% endfor %}
     </div>
