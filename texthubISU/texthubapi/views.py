@@ -1,7 +1,11 @@
 from django.shortcuts import *
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponse
+from django.views.generic.list import ListView
 from rest_framework import generics
 from rest_framework import filters
+from django.views.generic.list import ListView
+from json import loads as jloads
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
@@ -17,17 +21,17 @@ def index(request):
 
 
 # example url: http://127.0.0.1:8000/textbooks/?isbn=testisbn/
-class DoSearchView(generics.ListAPIView):
-    serializer_class = TextbookSerializer
+class DoSearchView(ListView):
     allow_empty = False
-
+    template_name = 'searchresults.html'
+    context_object_name = 'textbooks'
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
+        # TextbookController.update_view_count_controller(isbn)
         return queryset
-
-
+        
 def home_view(request):
     try:
         if request.method == 'POST':
@@ -62,6 +66,7 @@ def home_view(request):
                     else:
                         response = redirect(
                             'textbooks/'+isbn_to_search+'/default')
+                    TextbookDataStore.update_view_count(isbn_to_search)
                     return response
             if 'FeedbackContent' in request.POST:
                 try:
@@ -132,6 +137,15 @@ def sendRequest_view(request):
         return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
     except:
         return "Could not request an ISBN"
+
+class retrieveView(ListView):
+    allow_empty = False
+    template_name = 'retrieve.html'
+    context_object_name = 'textbooks'
+    def get_queryset(self):
+        queryset = TextbookController.retrieve_all_textBooks_controller()
+        # TextbookController.update_view_count_controller(isbn)
+        return queryset
 
 
 # def login(request, template_name='registration/login.html'):

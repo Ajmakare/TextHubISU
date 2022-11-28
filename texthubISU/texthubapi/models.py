@@ -27,10 +27,6 @@ class Review(models.Model):
     review_content = models.CharField(max_length=264)
     ISBN = models.ForeignKey(Textbook, on_delete=models.CASCADE)
 
-class Admin(models.Model):
-    username = models.CharField(max_length=264)
-    password = models.CharField(max_length=264)
-
 class Feedback(models.Model):
     feedback_content = models.CharField(max_length=264)
 

@@ -5,7 +5,7 @@ from itertools import chain
 from ..serializers import *
 from ..forms import *
 from django.shortcuts import *
-from django.db.models import Prefetch
+from django.db.models import Prefetch, F
 from django.db.models.functions import Lower
 
 class TextbookDataStore():
@@ -14,13 +14,16 @@ class TextbookDataStore():
     def do_search(param_isbn, sort):
         try:
             if sort == 'alpha':
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by(Lower('url')))).all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn).order_by(Lower('url'))}
                 return queryset
             if sort == 'price':
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by('price'))).all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn).order_by('price')}
                 return queryset
             else:
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn)}
             return queryset
 
         except:
@@ -36,7 +39,7 @@ class TextbookDataStore():
 
     def retrieve_all_textBooks():
         try:
-            queryset = Textbook.objects.all()
+            queryset = {'bookinfos': Textbook.objects.all()}
             return queryset
         except:
             print("Could not retrieve textbooks")
@@ -60,8 +63,12 @@ class TextbookDataStore():
         except:
             return "Update ISBN exception"
 
-    def update_view_count():
-        pass
+    def update_view_count(isbn):
+        try:
+            Textbook.objects.filter(ISBN=isbn).update(view_count=F('view_count') + 1)
+        except:
+            return "Update view count exception"
+        # pass
 
     def submit_review(review):
         try:

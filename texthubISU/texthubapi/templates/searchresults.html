@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+{% load rest_framework %}
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    </head>
+{% load crispy_forms_tags %}  
+
+<body>
+    <h1 style = "font-weight: bolder;text-align: center;margin-top: 20px;">
+        SEARCH RESULTS
+        <img src = "{% static 'texthubapi/images/reggie.png' %}" style = "height: 70px; width: 60px;">
+    </h1>
+    <div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888; text-align: center;">
+    {% for textbook in textbooks.bookinfos %}
+      <h3>ISBN: {{ textbook.ISBN }} </h3>
+      <h3>Name of book: {{ textbook.name}} </h3>
+      <h3>Author: {{ textbook.author }} </h3>
+      <h3 style="font-size:large;">This ISBN has been searched {{ textbook.view_count }} times</h3>
+      {% endfor %}
+      <div style = "text-align: center; padding:10px">
+        <a href="/home">Go to home page</a>
+    </div>
+      <h2 style = "font-weight: bolder;">Prices From Different Sources: </h2>
+      {% for source in textbooks.sources %}
+      <br>
+      <h3>Price: ${{ source.price }} </h3>
+      <h3>Source: {{ source.url}} </h3>
+      <br>
+      {% endfor %}
+    </div>
+</body>
+</html>
