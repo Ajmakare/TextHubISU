@@ -1,5 +1,5 @@
-class AdminDatastore:
-    def add_admin():
+class UserDataStore:
+    def add_user():
         pass
 
     def login():

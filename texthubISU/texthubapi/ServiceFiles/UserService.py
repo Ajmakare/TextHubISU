@@ -1,2 +1,2 @@
-class AdminService():
+class UserService():
     pass
