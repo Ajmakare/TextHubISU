@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888; text-align: center;">
+        <h1>Search Results:</h1>
+    {% for textbook in textbooks.bookinfos %}
+      <h3>ISBN: {{ textbook.ISBN }} </h3>
+      <h3>Name of book: {{ textbook.name}} </h3>
+      <h3>Author: {{ textbook.author }} </h3>
+      <h3>Textbook view count: {{ textbook.view_count }} </h3>
+      {% endfor %}
+      <div style = "text-align: center; padding:10px">
+        <a href="/home">Go to home page</a>
+    </div>
+      <h2>Prices From Different Sources: </h2>
+      {% for source in textbooks.sources %}
+      <p>Price: ${{ source.price }} </p>
+      <p>URL: {{ source.url}} </p>
+      <br>
+      {% endfor %}
+    </div>
+</body>
+</html>

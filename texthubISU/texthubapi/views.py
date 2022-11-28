@@ -1,7 +1,9 @@
 from django.shortcuts import *
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import generics
 from rest_framework import filters
+from django.views.generic.list import ListView
+from json import loads as jloads
 
 from .serializers import *
 from texthubapi.Controllers.TextbookController import *
@@ -17,16 +19,15 @@ def index(request):
 
 
 # example url: http://127.0.0.1:8000/textbooks/?isbn=testisbn/
-class DoSearchView(generics.ListAPIView):
-    serializer_class = TextbookSerializer
+class DoSearchView(ListView):
     allow_empty = False
-
+    template_name = 'searchresults.html'
+    context_object_name = 'textbooks'
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
         return queryset
-
 
 def home_view(request):
     try:

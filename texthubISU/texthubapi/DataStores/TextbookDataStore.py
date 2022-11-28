@@ -14,13 +14,16 @@ class TextbookDataStore():
     def do_search(param_isbn, sort):
         try:
             if sort == 'alpha':
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by(Lower('url')))).all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn).order_by(Lower('url'))}
                 return queryset
             if sort == 'price':
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by('price'))).all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn).order_by('price')}
                 return queryset
             else:
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
+                queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
+                    'sources': Source.objects.filter(ISBN=param_isbn)}
             return queryset
 
         except:
