@@ -16,13 +16,11 @@ class TextbookDataStore():
             if sort == 'alpha':
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by(Lower('url')))).all()
                 return queryset
-            if sort == 'price':
+            elif sort == 'price':
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by('price'))).all()
                 return queryset
             else:
                 queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related('sources').all()
-            
-            TextbookDataStore.update_view_count(param_isbn)
             return queryset
 
         except:
@@ -65,9 +63,6 @@ class TextbookDataStore():
     def update_view_count(isbn):
         try:
             Textbook.objects.filter(ISBN=isbn).update(view_count=F('view_count') + 1)
-            print("View count updated")
-            print(len(Textbook.objects.filter(ISBN=isbn)))
-            # return "View count updated"
         except:
             return "Update view count exception"
         # pass

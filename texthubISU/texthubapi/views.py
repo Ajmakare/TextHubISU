@@ -62,6 +62,7 @@ def home_view(request):
                     else:
                         response = redirect(
                             'textbooks/'+isbn_to_search+'/default')
+                    TextbookDataStore.update_view_count(isbn_to_search)
                     return response
             if 'FeedbackContent' in request.POST:
                 try:
