@@ -1,5 +1,6 @@
 from django.shortcuts import *
 from django.http import HttpResponse
+from django.views.generic.list import ListView
 from rest_framework import generics
 from rest_framework import filters
 
@@ -132,6 +133,30 @@ def sendRequest_view(request):
         return render(request, 'sendrequest.html', context={'requestisbn_form': RequestISBN})
     except:
         return "Could not request an ISBN"
+
+
+# def retrieveView(request):
+#     print(request.POST)
+#     print(request.method)
+#     try:
+#         if request.method == 'GET':
+#             try:
+#                 TextbookController.retrieve_all_textBooks_controller()
+#                 messages.success(request, 'Retrieve success!')
+#             except:
+#                 messages.error(request, 'Retrieve failed :(')
+#         return render(request, 'retrieve.html', context={'retrievetextbooks_form': RetrieveTextbooks})
+#     except:
+#         return "Could not retreive textbooks"
+
+class retrieveView(ListView):
+    allow_empty = False
+    template_name = 'retrieve.html'
+    context_object_name = 'textbooks'
+    def get_queryset(self):
+        queryset = TextbookController.retrieve_all_textBooks_controller()
+        # TextbookController.update_view_count_controller(isbn)
+        return queryset
 
 
 # def login(request, template_name='registration/login.html'):

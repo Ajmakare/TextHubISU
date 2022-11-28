@@ -25,6 +25,15 @@
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
     <br>
+    <!-- create a button that uses href to get to /retrieve -->
+    <!-- <form id = 'retrieve_form' method="POST" enctype="multipart/form-data"> -->
+        <!-- {% csrf_token %} -->
+        <!-- Using the formset -->
+        <!-- {{ retrievetextbooks_form|crispy }} -->
+        <!-- <button type="submit" class="btn btn-primary">Retrieve</button> -->
+        <a href = "/retrieve" class="btn btn-primary">Retrieve</a>
+    <!-- </form> -->
+    <br>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         

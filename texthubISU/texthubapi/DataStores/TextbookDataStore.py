@@ -36,7 +36,7 @@ class TextbookDataStore():
 
     def retrieve_all_textBooks():
         try:
-            queryset = Textbook.objects.all()
+            queryset = {'bookinfos': Textbook.objects.all()}
             return queryset
         except:
             print("Could not retrieve textbooks")
