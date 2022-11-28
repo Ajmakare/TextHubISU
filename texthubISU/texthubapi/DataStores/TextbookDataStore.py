@@ -17,14 +17,9 @@ class TextbookDataStore():
                 queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
                     'sources': Source.objects.filter(ISBN=param_isbn).order_by(Lower('url'))}
                 return queryset
-<<<<<<< HEAD
             if sort == 'price':
                 queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
                     'sources': Source.objects.filter(ISBN=param_isbn).order_by('price')}
-=======
-            elif sort == 'price':
-                queryset = Textbook.objects.filter(ISBN = param_isbn).prefetch_related(Prefetch('sources', queryset=Source.objects.order_by('price'))).all()
->>>>>>> Noah
                 return queryset
             else:
                 queryset = {'bookinfos': Textbook.objects.filter(ISBN =param_isbn), 
