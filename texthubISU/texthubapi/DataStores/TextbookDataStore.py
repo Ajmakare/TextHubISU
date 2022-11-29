@@ -47,9 +47,15 @@ class TextbookDataStore():
 
     def delete_ISBN(isbn):
         try:
-            Textbook.objects.filter(ISBN=isbn).delete()
-        except:
-            return "Delete ISBN exception"
+            if Textbook.objects.filter(pk=isbn).exists():
+                Textbook.objects.filter(pk=isbn).delete()
+            else:
+                raise ValueError
+        except ValueError:
+            print("Could not delete ISBN: " + isbn + " because it does not exist")
+            raise ValueError
+            pass
+
 
     def add_ISBN(textbook):
         try:
