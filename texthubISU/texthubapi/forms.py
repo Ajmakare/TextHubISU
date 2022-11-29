@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class SearchISBN(forms.Form):
@@ -46,6 +48,8 @@ class Login(forms.Form):
     Username = forms.CharField(label="username", max_length=264)
     Password = forms.CharField(label="password", max_length=264)
 
-class AddAdmin(forms.Form):
+class AddUser(forms.Form):
+    Email = forms.EmailField(required=True)
     Username = forms.CharField(label="username", max_length=264)
     Password = forms.CharField(label="password", max_length=264)
+

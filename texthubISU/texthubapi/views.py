@@ -11,6 +11,7 @@ from .serializers import *
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.Controllers.SiteController import *
 from texthubapi.Controllers.ScraperController import *
+from texthubapi.Controllers.UserController import *
 from .DataStores.ScraperDatastore import *
 from .forms import *
 from django.contrib import messages  # import messages
@@ -146,6 +147,20 @@ class retrieveView(ListView):
         queryset = TextbookController.retrieve_all_textBooks_controller()
         # TextbookController.update_view_count_controller(isbn)
         return queryset
+
+    
+def registerUser_view(request):
+    try:
+        print("enter view")
+        if request.method == 'POST':
+                print("hits")
+                UserController.add_user_controller(request)
+                print('Finish')
+                messages.success(request, "Registration Successful")
+        return render(request,'registeruser.html', context={'register_form':AddUser})
+    except:
+        return "registry page exception"
+        
 
 
 # def login(request, template_name='registration/login.html'):

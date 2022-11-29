@@ -1,16 +1,9 @@
-<<<<<<< HEAD
-class AdminDatastore:
-
-    def add_admin(admin_credentials):
-        try:
-            admin_credentials.save()
-        except:
-            return "Could not request an ISBN"
-=======
 class UserDataStore:
-    def add_user():
-        pass
->>>>>>> main
+    def add_user(user):
+        try:
+            user.save()
+        except:
+            return "Could not add user"
 
     def login():
         pass
