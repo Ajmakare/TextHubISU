@@ -157,20 +157,6 @@ class retrieveView(ListView):
         # TextbookController.update_view_count_controller(isbn)
         return queryset
 
-    
-def registerUser_view(request):
-    try:
-        print("enter view")
-        if request.method == 'POST':
-                print("hits")
-                UserController.add_user_controller(request)
-                print('Finish')
-                messages.success(request, "Registration Successful")
-        return render(request,'registeruser.html', context={'register_form':AddUser})
-    except:
-        return "registry page exception"
-        
-
 
 # def login(request, template_name='registration/login.html'):
 #     if request.method == "POST":
