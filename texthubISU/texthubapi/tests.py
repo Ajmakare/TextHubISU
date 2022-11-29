@@ -40,11 +40,15 @@ class TextbookTest(TestCase):
         textbook = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertFalse(textbook.exists())
 
-    # create test for delete isbn fail (ISBN not in DB)
+    # create a django test for delete isbn fail (ISBN not in DB) that checks for a ValueError using assertRaises
     def test_delete_ISBN_fail(self):
-        self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
-        textbook = Textbook.objects.filter(ISBN = 'notindatabase')
-        self.assertFalse(textbook.exists())
+        # with self.assertRaises(ValueError):
+        #     self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
+        with self.assertRaises(ValueError):
+            TextbookDataStore.delete_ISBN('notindatabase')
+
+        # self.assertRaises(ValueError, self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'}))
+
 
     # Test submit review success (POST)
     def test_submit_review_pass(self):
