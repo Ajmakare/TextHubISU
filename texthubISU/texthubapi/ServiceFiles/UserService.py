@@ -12,7 +12,10 @@ class UserService():
     def add_user_service(request):
         adduser_form = AddUser(request.POST)
         if adduser_form.is_valid():
-            User.objects.create_user(
-                adduser_form.cleaned_data['Username'], adduser_form.cleaned_data['Email'], adduser_form.cleaned_data['Password'])
-            print("Start Service")
+            email = adduser_form.cleaned_data['Email']
+            user = adduser_form.cleaned_data['Username']
+            if not User.objects.filter(email = email).exists() and not User.objects.filter(username = user).exists():
+                print("Start Service")
+                User.objects.create_user(
+                    user, email, adduser_form.cleaned_data['Password'])
             # UserDataStore.add_user(user)

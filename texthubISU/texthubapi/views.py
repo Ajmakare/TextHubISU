@@ -114,11 +114,20 @@ def admin(request):
             if 'WantToPopulate' in request.POST:
                 print('got to call pop')
                 ScraperController.populateDB()
+            if "Email" in request.POST:
+                try:
+                    UserController.add_user_controller(request)
+                    messages.success(request, 'User created successfully!')
+                except:
+                    messages.error(
+                        request, 'Could not create user!')
+            
         context = {
             'addisbn_form': AddISBN,
             'deleteisbn_form': DeleteISBN,
             'updateisbn_form': UpdateISBN,
-            'populate_form': PopulateForm
+            'populate_form': PopulateForm,
+            'register_form': AddUser
         }
         return render(request, 'admin.html', context=context)
     except:

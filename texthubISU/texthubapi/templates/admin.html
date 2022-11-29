@@ -54,7 +54,17 @@
     
         <button type="submit" class="btn btn-primary">Scrape and Populate Database</button>
     </form>
-    </div>  
+
+    <br>
+    <br>
+    <h1>Register User</h1>
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {{ register_form|crispy }}
+
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
     <div style = "text-align: center; padding:10px">
         <a href="/home">Go to home page</a>
     </div>
@@ -65,3 +75,4 @@
     <a href="/adminstuff/login">Login To Execute Admin Commands</a>
 </div>
 {% endif %}
+
