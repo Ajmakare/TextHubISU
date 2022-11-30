@@ -35,6 +35,11 @@ class TextbookTest(TestCase):
         response = self.client.get('/textbooks/testisbn/price')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    # Test retrieve all textbooks
+    def test_retrieve_all_textbooks_pass(self):
+        response = self.client.get('/retrieve')
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+
     # Test delete ISBN
     def test_delete_ISBN_pass(self):
         self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
