@@ -35,20 +35,16 @@ class TextbookTest(TestCase):
         response = self.client.get('/textbooks/testisbn/price')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    # Test delete ISBN
     def test_delete_ISBN_pass(self):
         self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
         textbook = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertFalse(textbook.exists())
 
-    # create a django test for delete isbn fail (ISBN not in DB) that checks for a ValueError using assertRaises
+    # Test delete ISBN with ISBN not in database
     def test_delete_ISBN_fail(self):
-        # with self.assertRaises(ValueError):
-        #     self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
         with self.assertRaises(ValueError):
             TextbookDataStore.delete_ISBN('notindatabase')
-
-        # self.assertRaises(ValueError, self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'}))
-
 
     # Test submit review success (POST)
     def test_submit_review_pass(self):
@@ -62,11 +58,13 @@ class TextbookTest(TestCase):
         review = Review.objects.filter(review_content = '12020424')
         self.assertFalse(review.exists())
 
+    # Test submitting site feedback
     def test_submit_feedback_pass(self):
-        self.client.post('/home', data = {'FeedbackContent': 'feedback'})
-        feedback = Feedback.objects.filter(feedback_content = 'feedback')
+        self.client.post('/home', data = {'FeedbackContent': 'newfeedback'})
+        feedback = Feedback.objects.filter(feedback_content = 'newfeedback')
         self.assertTrue(feedback.exists())
 
+    # Test submitting site feedback with no content
     def test_submit_feedback_fail(self):
         self.client.post('/home', data = {'FeedbackContent': ''})
         feedback = Feedback.objects.filter(feedback_content = '')
