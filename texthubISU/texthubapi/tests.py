@@ -19,7 +19,13 @@ class SiteDataStoreTest(TestCase):
 class TextbookDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+
+    def test_submit_review_pass(self):
+        new_review = Review(review_content="This is a review", ISBN = Textbook.objects.get(pk = 'testisbn'))
+        TextbookDataStore.submit_review(new_review)
+        found_review = Review.objects.filter(review_content = 'This is a review')
+        self.assertTrue(found_review)
 
 class UserDataStoreTest(TestCase):
     @classmethod
