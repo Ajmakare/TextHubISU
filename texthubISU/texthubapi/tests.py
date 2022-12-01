@@ -1,6 +1,7 @@
-from django.test import TestCase,RequestFactory
+from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
+from texthubapi.ServiceFiles.SiteService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
@@ -48,6 +49,25 @@ class TextbookDataStoreTest(TestCase):
         queryset = TextbookDataStore.do_search('testisbn', 'price')
         self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
 
+    def test_retrieve_all_textBooks(self):
+        queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
+        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+
+    def test_delete_ISBN(self):
+        TextbookDataStore.delete_ISBN("testisbn")
+        testbook = Textbook.objects.filter(ISBN="testisbn")
+        self.assertFalse(testbook.exists())
+
+    def test_delete_ISBN_not_found(self):
+        with self.assertRaises(ValueError):
+            TextbookDataStore.delete_ISBN("notindatabase")
+
+    def test_update_view_count(self):
+        TextbookDataStore.update_view_count("testisbn")
+        testbook = Textbook.objects.get(ISBN="testisbn")
+        self.assertEqual(testbook.view_count, 1)
+
+        
 
 class UserDataStoreTest(TestCase):
     @classmethod
@@ -58,6 +78,12 @@ class SiteServiceTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
+    def test_submit_feedback(self):
+        request = RequestFactory().post('/submitfeedback', data={'FeedbackContent': 'testfeedback'})
+        SiteService.submit_Feedback_service(request)
+        testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
+        self.assertTrue(testfeedback.exists())
 
 class TextbookServiceTest(TestCase):
     @classmethod
