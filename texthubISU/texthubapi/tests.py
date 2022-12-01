@@ -66,7 +66,24 @@ class SiteServiceTest(TestCase):
 class TextbookServiceTest(TestCase):
     @classmethod
     def setUp(self):
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
+
+    def test_retrieve_all_textBooks_service(self):
+        queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
+        self.assertEqual(str(TextbookService.retrieve_all_textBooks_service()), str(queryset))
+
+    def test_delete_ISBN_service(self):
+        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'testisbn'})
+        TextbookService.delete_ISBN_service(request)
+        testbook = Textbook.objects.filter(ISBN="testisbn")
+        self.assertFalse(testbook.exists())
+
+    def test_delete_ISBN_service_not_found(self):
+        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'notindatabase'})
+        with self.assertRaises(ValueError):
+            TextbookService.delete_ISBN_service(request)
+            
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
