@@ -114,6 +114,13 @@ class TextbookServiceTest(TestCase):
         notatextbook = 'I am not a textbook'
         with self.assertRaises(AttributeError):
             TextbookService.update_ISBN_service(notatextbook)
+            
+    def test_review_pass(self):
+        request = RequestFactory().post('/home', data={'ISBNToReview': 'testisbn', 'ReviewContent':'This book is awesome!'})
+        TextbookService.submit_review_service(request)
+        review = Review.objects.filter(review_content = 'This book is awesome!')
+        self.assertTrue(review.exists())
+
     
 class UserServiceTest(TestCase):
     @classmethod
