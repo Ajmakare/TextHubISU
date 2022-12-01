@@ -62,7 +62,7 @@ class TextbookDataStore():
         try:
             textbook.save()
         except:
-            return "Update ISBN exception"
+            raise AttributeError
 
     def update_view_count(isbn):
         try:

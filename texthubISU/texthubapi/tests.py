@@ -73,7 +73,12 @@ class TextbookDataStoreTest(TestCase):
         updated_textbook.name = 'new name'
         updated_textbook.author = 'new author'
         TextbookDataStore.update_ISBN(updated_textbook)
-        self.assertNotEqual(old_textbook, Textbook.objects.get(pk='testisbn'))
+        self.assertNotEqual(old_textbook, Textbook.objects.get(pk='testisbn')) 
+          
+    def test_update_ISBN_fail(self):
+        notatextbook = 'I am not a textbook'
+        with self.assertRaises(AttributeError):
+            TextbookDataStore.update_ISBN(notatextbook)
 
         
 
