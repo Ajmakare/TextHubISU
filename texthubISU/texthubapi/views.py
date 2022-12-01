@@ -164,8 +164,12 @@ class retrieveView(ListView):
 
 
 def loginView(request):
-    
-    #request = controller
-    UserController.login_controller(request)
+
+    if request.method == 'POST':
+
+        if (UserController.login_controller(request)):
+            return redirect('admin2')
+        else:
+            messages.error(request, "Username or password was incorrect!")
 
     return render(request, 'login.html', context={'login_form': LoginForm})

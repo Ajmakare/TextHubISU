@@ -33,5 +33,6 @@ class UserService():
                 if (type(User2) is not str):
                     if (User2.check_password(password)):
                         login(request, User2)
-                else:
-                    messages.error(request,"Username or password was incorrect!")
+                        return True
+                    else:
+                        return False

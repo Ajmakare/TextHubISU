@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import sys
-from ..models import Textbook
+from ..models import *
 from abc import ABC
 from selenium.webdriver.chrome.options import Options
 import json
