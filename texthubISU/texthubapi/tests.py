@@ -46,7 +46,6 @@ class TextbookDataStoreTest(TestCase):
         self.assertEqual(testbook.view_count, 1)
 
         
-
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
@@ -58,7 +57,7 @@ class SiteServiceTest(TestCase):
         pass
 
     def test_submit_feedback(self):
-        request = RequestFactory().post('/submitfeedback', data={'FeedbackContent': 'testfeedback'})
+        request = RequestFactory().post('/home', data={'FeedbackContent': 'testfeedback'})
         SiteService.submit_Feedback_service(request)
         testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
         self.assertTrue(testfeedback.exists())
@@ -83,7 +82,7 @@ class TextbookServiceTest(TestCase):
         request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'notindatabase'})
         with self.assertRaises(ValueError):
             TextbookService.delete_ISBN_service(request)
-            
+
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
@@ -92,14 +91,17 @@ class UserServiceTest(TestCase):
 class ViewsTest(TestCase):
     @classmethod
     def setUp(self):
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
-
-
 
     def test_retrieve_textbook_view(self):
         response = self.client.get('/retrieve')
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
+    def test_admin_delete_ISBN_view(self):
+        self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
+        textbook = Textbook.objects.filter(ISBN = 'testisbn')
+        self.assertFalse(textbook.exists())
 
 
 
