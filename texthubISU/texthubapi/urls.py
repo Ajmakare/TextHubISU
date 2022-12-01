@@ -9,5 +9,5 @@ urlpatterns = [
     # path('login2', views.login, name = "login"),
     path('home', views.home_view, name='home'),
     path('sendrequest/', views.sendRequest_view, name = "sendrequest"),
-    path('retrieve', views.retrieveView.as_view())
+    path('retrieve', views.retrieve_View.as_view())
 ]

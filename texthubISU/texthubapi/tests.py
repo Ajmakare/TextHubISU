@@ -53,6 +53,11 @@ class TextbookDataStoreTest(TestCase):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
         self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
 
+    def test_retrieve_all_textBooks_empty_database(self):
+        Textbook.objects.all().delete()
+        queryset = "{'bookinfos': <QuerySet []>}"
+        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+
     def test_delete_ISBN(self):
         TextbookDataStore.delete_ISBN("testisbn")
         testbook = Textbook.objects.filter(ISBN="testisbn")
@@ -81,7 +86,6 @@ class TextbookDataStoreTest(TestCase):
             TextbookDataStore.update_ISBN(notatextbook)
 
         
-
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
@@ -126,7 +130,21 @@ class TextbookServiceTest(TestCase):
         with self.assertRaises(AttributeError):
             TextbookService.update_ISBN_service(notareview)
 
-    
+    def test_retrieve_all_textBooks_service(self):
+        queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
+        self.assertEqual(str(TextbookService.retrieve_all_textBooks_service()), str(queryset))
+
+    def test_delete_ISBN_service(self):
+        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'testisbn'})
+        TextbookService.delete_ISBN_service(request)
+        testbook = Textbook.objects.filter(ISBN="testisbn")
+        self.assertFalse(testbook.exists())
+
+    def test_delete_ISBN_service_not_found(self):
+        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'notindatabase'})
+        with self.assertRaises(ValueError):
+            TextbookService.delete_ISBN_service(request)
+
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
@@ -135,10 +153,22 @@ class UserServiceTest(TestCase):
 class ViewsTest(TestCase):
     @classmethod
     def setUp(self):
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
 
+    def test_submit_feedback_view(self):
+        self.client.post('/home', data = {'FeedbackContent': 'feedbacktimewoo'})
+        self.assertTrue(Feedback.objects.filter(feedback_content = 'feedbacktimewoo').exists())
 
+    def test_admin_delete_ISBN_view(self):
+        self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
+        textbook = Textbook.objects.filter(ISBN = 'testisbn')
+        self.assertFalse(textbook.exists())
 
+    def test_admin_delete_ISBN_view_not_found(self):
+        response = self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")
 
 
 # # Note for others making tests - Tests create a seperate database from our app! So set up what you need.
