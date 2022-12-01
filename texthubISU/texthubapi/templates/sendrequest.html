@@ -19,10 +19,10 @@
 {% endif %}
 <form method="POST" >
     {% csrf_token %}
+    <div style = 'text-align: center;'>
+        <button type="submit" class="btn btn-primary" name= "RequestButton">Submit Request</button>
+    </div>
 
-    <button class="Request ISBN" name="RequestButton" value="submit">
-        Submit Request
-    </button>
 </form>
 </div>
 <div style = "text-align: center;padding: 20px;">

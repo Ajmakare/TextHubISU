@@ -48,7 +48,9 @@ class TextbookService():
                 print(str(updated_textbook))
                 updated_textbook.name = new_name
                 updated_textbook.author = new_author  
-                TextbookDataStore.update_ISBN(updated_textbook)    
+                TextbookDataStore.update_ISBN(updated_textbook)   
+            else:
+                raise ValueError
         else:
             return "Form invalid"  
     
