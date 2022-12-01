@@ -66,6 +66,14 @@ class TextbookDataStoreTest(TestCase):
         TextbookDataStore.update_view_count("testisbn")
         testbook = Textbook.objects.get(ISBN="testisbn")
         self.assertEqual(testbook.view_count, 1)
+        
+    def test_update_ISBN_pass(self):
+        old_textbook = Textbook.objects.filter(ISBN = 'testisbn')
+        updated_textbook = Textbook.objects.get(pk='testisbn')
+        updated_textbook.name = 'new name'
+        updated_textbook.author = 'new author'
+        TextbookDataStore.update_ISBN(updated_textbook)
+        self.assertNotEqual(old_textbook, Textbook.objects.get(pk='testisbn'))
 
         
 
