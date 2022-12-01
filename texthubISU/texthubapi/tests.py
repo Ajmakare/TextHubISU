@@ -93,7 +93,7 @@ class SiteServiceTest(TestCase):
         pass
 
     def test_submit_feedback(self):
-        request = RequestFactory().post('/submitfeedback', data={'FeedbackContent': 'testfeedback'})
+        request = RequestFactory().post('/home', data={'FeedbackContent': 'testfeedback'})
         SiteService.submit_Feedback_service(request)
         testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
         self.assertTrue(testfeedback.exists())
@@ -101,7 +101,14 @@ class SiteServiceTest(TestCase):
 class TextbookServiceTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+    
+    def test_update_ISBN_pass(self):
+        old_book = Textbook.objects.filter(ISBN = 'testisbn')
+        request = RequestFactory().post('/admin2', data={'ISBNToUpdate': 'testisbn', 'name':'new name', 'author':'new author'})
+        updated_book = Textbook.objects.filter(ISBN = 'testisbn')
+        self.assertNotEqual(old_book, updated_book)
+    
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
