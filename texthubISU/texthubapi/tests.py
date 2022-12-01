@@ -19,7 +19,19 @@ class SiteDataStoreTest(TestCase):
 class TextbookDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
+        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+
+    def test_delete_ISBN(self):
+        TextbookDataStore.delete_ISBN("testisbn")
+        testbook = Textbook.objects.filter(ISBN="testisbn")
+        self.assertFalse(testbook.exists())
+
+    def test_update_view_count(self):
+        TextbookDataStore.update_view_count("testisbn")
+        testbook = Textbook.objects.get(ISBN="testisbn")
+        self.assertEqual(testbook.view_count, 1)
+
+        
 
 class UserDataStoreTest(TestCase):
     @classmethod
