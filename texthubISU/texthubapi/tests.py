@@ -32,6 +32,10 @@ class TextbookDataStoreTest(TestCase):
         with self.assertRaises(AttributeError):
             TextbookDataStore.submit_review(notareview)
 
+    def test_do_search_pass(self):
+        queryset = TextbookDataStore.do_search('testisbn', 'default')
+        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+
 
 class UserDataStoreTest(TestCase):
     @classmethod
