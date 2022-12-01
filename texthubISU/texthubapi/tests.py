@@ -120,6 +120,11 @@ class TextbookServiceTest(TestCase):
         TextbookService.submit_review_service(request)
         review = Review.objects.filter(review_content = 'This book is awesome!')
         self.assertTrue(review.exists())
+        
+    def test_review_fail(self):
+        notareview = 'I am not a review'
+        with self.assertRaises(AttributeError):
+            TextbookService.update_ISBN_service(notareview)
 
     
 class UserServiceTest(TestCase):
