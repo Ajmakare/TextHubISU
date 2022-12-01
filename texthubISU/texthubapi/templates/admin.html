@@ -11,8 +11,9 @@
     
     {% if user.is_authenticated %}
     {% block content %}
-<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
-    {% if messages %}
+<body style="background-color:#ededed;">  
+        <div style = "background-color: white; margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
+            {% if messages %}
     {% for message in messages %}
     <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
     {% endfor %}
@@ -47,32 +48,34 @@
     <br>
     <br>
     <form method="POST" enctype="multipart/form-data">
-    
+        
         {% csrf_token %}
         <!-- Using the formset -->
         {{ populate_form|crispy }}
-    
+        
         <button type="submit" class="btn btn-primary">Scrape and Populate Database</button>
     </form>
-
+    
     <br>
     <br>
     <h1>Register User</h1>
     <form method="POST" enctype="multipart/form-data">
-
+        
         {% csrf_token %}
         {{ register_form|crispy }}
-
+        
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
     <div style = "text-align: center; padding:10px">
         <a href="/home">Go to home page</a>
     </div>
-{% endblock %}
-{% else %}
-
-<div style = "text-align: center;">
-    <a href="/adminstuff/login">Login To Execute Admin Commands</a>
-</div>
-{% endif %}
-
+    {% endblock %}
+    {% else %}
+    
+    <div style = "text-align: center;">
+        <a href="/adminstuff/login">Login To Execute Admin Commands</a>
+    </div>
+    {% endif %}
+</body>
+    
+    

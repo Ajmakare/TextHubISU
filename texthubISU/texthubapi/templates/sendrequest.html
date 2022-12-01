@@ -6,26 +6,28 @@
     </head>
     {% load crispy_forms_tags %}  
 
-
-<h1 style = "font-weight: bolder;text-align: center ;margin-top: 20px;">ISBN not found... </h1>
-<h2 style = "font-weight: bolder;text-align: center ;margin-top: 20px; font-size:large;"> Would you like to request the ISBN be added to our site?</h2>
+<body style = 'background-color: #ededed;'>
+    
+    <h1 style = "font-weight: bolder;text-align: center ;margin-top: 20px;">ISBN not found... </h1>
+    <h2 style = "font-weight: bolder;text-align: center ;margin-top: 20px; font-size:large;"> Would you like to request the ISBN be added to our site?</h2>
 <br>
 
-<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
+<div style = "background-color: white; margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
     {% if messages %}
     {% for message in messages %}
     <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
     {% endfor %}
-{% endif %}
-<form method="POST" >
-    {% csrf_token %}
+    {% endif %}
+    <form method="POST" >
+        {% csrf_token %}
     <div style = 'text-align: center;'>
         <button type="submit" class="btn btn-primary" name= "RequestButton">Submit Request</button>
     </div>
-
+    
 </form>
 </div>
 <div style = "text-align: center;padding: 20px;">
     <a href="/home">Return to home</a>
 </div>
 <br>
+</body>
