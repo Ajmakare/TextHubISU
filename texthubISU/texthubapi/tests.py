@@ -27,6 +27,12 @@ class TextbookDataStoreTest(TestCase):
         found_review = Review.objects.filter(review_content = 'This is a review')
         self.assertTrue(found_review)
 
+    def test_submit_review_fail(self):
+        notareview = 'I am not a review'
+        with self.assertRaises(AttributeError):
+            TextbookDataStore.submit_review(notareview)
+
+
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):

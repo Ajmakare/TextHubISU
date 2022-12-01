@@ -75,5 +75,5 @@ class TextbookDataStore():
         try:
             review.save()
         except:
-            return "Submit review exception"
+            raise AttributeError
     # def add_isbn2 ():
