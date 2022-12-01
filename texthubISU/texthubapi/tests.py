@@ -106,8 +106,14 @@ class TextbookServiceTest(TestCase):
     def test_update_ISBN_pass(self):
         old_book = Textbook.objects.filter(ISBN = 'testisbn')
         request = RequestFactory().post('/admin2', data={'ISBNToUpdate': 'testisbn', 'name':'new name', 'author':'new author'})
+        TextbookService.update_ISBN_service(request)
         updated_book = Textbook.objects.filter(ISBN = 'testisbn')
-        self.assertNotEqual(old_book, updated_book)
+        self.assertNotEqual(old_book, updated_book)    
+        
+    def test_update_ISBN_fail(self):
+        notatextbook = 'I am not a textbook'
+        with self.assertRaises(AttributeError):
+            TextbookService.update_ISBN_service(notatextbook)
     
 class UserServiceTest(TestCase):
     @classmethod

@@ -18,6 +18,7 @@ class TextbookService():
         if deleteisbn_form.is_valid():
             isbn_from_form = deleteisbn_form.cleaned_data['ISBNToDelete']
             TextbookDataStore.delete_ISBN(isbn_from_form)
+            
         else:
             return "Form invalid"
 
