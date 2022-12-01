@@ -168,7 +168,19 @@ class ViewsTest(TestCase):
     def test_admin_delete_ISBN_view_not_found(self):
         response = self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")
+        self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")    
+        
+        
+    def test_admin_update_ISBN_view(self):
+        old_book = Textbook.objects.filter(ISBN = 'testisbn')
+        self.client.post('/admin2', data = {'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
+        updated_book = Textbook.objects.filter(ISBN = 'testisbn')
+        self.assertNotEqual(old_book, updated_book)
+        
+    def test_admin_update_ISBN_view_not_found(self):
+        response = self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "ISBN not in database!")
 
 
 # # Note for others making tests - Tests create a seperate database from our app! So set up what you need.
