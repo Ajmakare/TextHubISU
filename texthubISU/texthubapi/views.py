@@ -15,6 +15,7 @@ from texthubapi.Controllers.UserController import *
 from .DataStores.ScraperDatastore import *
 from .forms import *
 from django.contrib import messages  # import messages
+from django.contrib.auth import login
 
 
 def index(request):
@@ -26,13 +27,15 @@ class DoSearchView(ListView):
     allow_empty = False
     template_name = 'searchresults.html'
     context_object_name = 'textbooks'
+
     def get_queryset(self):
         isbn = self.kwargs['ISBN']
         sort = self.kwargs['sort']
         queryset = TextbookController.do_search_controller(isbn, sort)
         # TextbookController.update_view_count_controller(isbn)
         return queryset
-        
+
+
 def home_view(request):
     try:
         if request.method == 'POST':
@@ -121,7 +124,7 @@ def admin(request):
                 except:
                     messages.error(
                         request, 'Could not create user!')
-            
+
         context = {
             'addisbn_form': AddISBN,
             'deleteisbn_form': DeleteISBN,
@@ -138,27 +141,31 @@ def sendRequest_view(request):
     try:
         if request.method == 'POST':
             if 'RequestButton' in request.POST:
-                    try:
-                        isbn_to_request = request.session.get('isbn_to_request')
-                        TextbookController.request_ISBN_controller(isbn_to_request)
-                        messages.success(request, 'Submit request success!')
-                    except:
-                        messages.error(request, 'Submit request failed :(')
-        return render(request, 'sendrequest.html', context={'requestisbn_form':RequestISBN})
+                try:
+                    isbn_to_request = request.session.get('isbn_to_request')
+                    TextbookController.request_ISBN_controller(isbn_to_request)
+                    messages.success(request, 'Submit request success!')
+                except:
+                    messages.error(request, 'Submit request failed :(')
+        return render(request, 'sendrequest.html', context={'requestisbn_form': RequestISBN})
     except:
         return "Could not request an ISBN"
+
 
 class retrieveView(ListView):
     allow_empty = False
     template_name = 'retrieve.html'
     context_object_name = 'textbooks'
+
     def get_queryset(self):
         queryset = TextbookController.retrieve_all_textBooks_controller()
         # TextbookController.update_view_count_controller(isbn)
         return queryset
 
 
-# def login(request, template_name='registration/login.html'):
-#     if request.method == "POST":
+def loginView(request):
+    
+    #request = controller
+    UserController.login_controller(request)
 
-#     return render(request, template_name, context={'login_form':Login})
+    return render(request, 'login.html', context={'login_form': LoginForm})

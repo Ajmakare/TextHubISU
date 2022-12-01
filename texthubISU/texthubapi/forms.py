@@ -10,6 +10,7 @@ class SearchISBN(forms.Form):
     SortByPrice = forms.BooleanField(
         label="Sort Sources by Price (Low to high)", required=False)
 
+
 class AddISBN(forms.Form):
     ISBNToAdd = forms.CharField(label="ISBN to Add", max_length=264)
     name = forms.CharField(label="Name", max_length=264)
@@ -44,12 +45,12 @@ class RequestISBN(forms.Form):
     ISBNToRequest = forms.CharField(label="ISBN", max_length=264)
 
 
-class Login(forms.Form):
+class LoginForm(forms.Form):
     Username = forms.CharField(label="username", max_length=264)
     Password = forms.CharField(label="password", max_length=264)
+
 
 class AddUser(forms.Form):
     Email = forms.EmailField(required=True)
     Username = forms.CharField(label="username", max_length=264)
     Password = forms.CharField(label="password", max_length=264)
-
