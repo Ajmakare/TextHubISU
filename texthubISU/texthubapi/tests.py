@@ -21,10 +21,19 @@ class TextbookDataStoreTest(TestCase):
     def setUp(self):
         self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
 
+    def test_retrieve_all_textBooks(self):
+        queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
+        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+        
+
     def test_delete_ISBN(self):
         TextbookDataStore.delete_ISBN("testisbn")
         testbook = Textbook.objects.filter(ISBN="testisbn")
         self.assertFalse(testbook.exists())
+
+    def test_delete_ISBN_not_found(self):
+        with self.assertRaises(ValueError):
+            TextbookDataStore.delete_ISBN("notindatabase")
 
     def test_update_view_count(self):
         TextbookDataStore.update_view_count("testisbn")
