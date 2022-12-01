@@ -26,6 +26,11 @@ class TextbookDataStoreTest(TestCase):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
         self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
 
+    def test_retrieve_all_textBooks_empty_database(self):
+        Textbook.objects.all().delete()
+        queryset = "{'bookinfos': <QuerySet []>}"
+        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+
     def test_delete_ISBN(self):
         TextbookDataStore.delete_ISBN("testisbn")
         testbook = Textbook.objects.filter(ISBN="testisbn")
@@ -72,6 +77,11 @@ class ViewsTest(TestCase):
     def setUp(self):
         pass
 
+
+
+    def test_retrieve_textbook_view(self):
+        response = self.client.get('/retrieve')
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
 
 

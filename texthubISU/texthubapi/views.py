@@ -148,7 +148,7 @@ def sendRequest_view(request):
     except:
         return "Could not request an ISBN"
 
-class retrieveView(ListView):
+class retrieve_View(ListView):
     allow_empty = False
     template_name = 'retrieve.html'
     context_object_name = 'textbooks'
