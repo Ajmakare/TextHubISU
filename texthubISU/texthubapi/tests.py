@@ -3,6 +3,7 @@ from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
 from .models import *
 from http import HTTPStatus
+from django.contrib.messages import get_messages
 
 class AdminTest(TestCase):
     pass
@@ -78,11 +79,12 @@ class TextbookTest(TestCase):
     # Test update a textbook in database
     def test_update_ISBN_pass(self):
         old_textbook = Textbook.objects.filter(ISBN = 'testisbn')
-        self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase','name':'new name', 'author': 'new author'})
+        self.client.post('/admin2', data = {'ISBNToUpdate': 'testisbn','name':'new name', 'author': 'new author'})
         new_textbook = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertNotEqual(old_textbook, new_textbook) 
 
     # Test update a textbook in database fail
     def test_update_ISBN_fail(self):
-        self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase','name':'new name', 'author': 'new author'})
-        self.assertFalse(Textbook.objects.filter(ISBN = 'notindatabase')) 
+        response = self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase','name':'new name', 'author': 'new author'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), 'ISBN not in database!')

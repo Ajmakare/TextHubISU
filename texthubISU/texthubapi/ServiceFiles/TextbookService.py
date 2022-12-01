@@ -50,7 +50,7 @@ class TextbookService():
                 updated_textbook.author = new_author  
                 TextbookDataStore.update_ISBN(updated_textbook)   
             else:
-                raise ValueError
+                raise AttributeError
         else:
             return "Form invalid"  
     

@@ -110,7 +110,7 @@ def admin(request):
                     messages.success(request, 'ISBN updated in database!')
                 except:
                     messages.error(
-                        request, 'Could not update ISBN in database!')
+                        request, 'ISBN not in database!')
             if 'WantToPopulate' in request.POST:
                 print('got to call pop')
                 ScraperController.populateDB()
