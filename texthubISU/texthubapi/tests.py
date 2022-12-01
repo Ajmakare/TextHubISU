@@ -94,15 +94,19 @@ class ViewsTest(TestCase):
         self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
 
-    def test_retrieve_textbook_view(self):
-        response = self.client.get('/retrieve')
-        self.assertEqual(response.status_code, HTTPStatus.OK)
+    def test_submit_feedback_view(self):
+        self.client.post('/home', data = {'FeedbackContent': 'feedbacktimewoo'})
+        self.assertTrue(Feedback.objects.filter(feedback_content = 'feedbacktimewoo').exists())
 
     def test_admin_delete_ISBN_view(self):
         self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
         textbook = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertFalse(textbook.exists())
 
+    def test_admin_delete_ISBN_view_not_found(self):
+        response = self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")
 
 
 # # Note for others making tests - Tests create a seperate database from our app! So set up what you need.
