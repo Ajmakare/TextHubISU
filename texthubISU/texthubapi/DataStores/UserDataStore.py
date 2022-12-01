@@ -4,6 +4,3 @@ class UserDataStore:
             user.save()
         except:
             return "Could not add user"
-
-    def login():
-        pass

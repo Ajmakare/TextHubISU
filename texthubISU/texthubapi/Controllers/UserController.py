@@ -4,7 +4,4 @@ class UserController:
     
     def add_user_controller(request):
         return UserService.add_user_service(request)
-    
-    def login_controller():
-        pass
 
