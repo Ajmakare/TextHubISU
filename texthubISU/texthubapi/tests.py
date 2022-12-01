@@ -40,6 +40,15 @@ class TextbookDataStoreTest(TestCase):
         queryset = TextbookDataStore.do_search('notindatabase', 'default')
         self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet []>, \'sources\': <QuerySet []>}')
 
+    def test_do_search_sortalphabetically_pass(self):
+        queryset = TextbookDataStore.do_search('testisbn', 'alpha')
+        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+    
+    def test_do_search_sortprice_pass(self):
+        queryset = TextbookDataStore.do_search('testisbn', 'price')
+        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+
+
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
