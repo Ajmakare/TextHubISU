@@ -1,6 +1,7 @@
-from django.test import TestCase,RequestFactory
+from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
+from texthubapi.ServiceFiles.SiteService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
@@ -24,7 +25,6 @@ class TextbookDataStoreTest(TestCase):
     def test_retrieve_all_textBooks(self):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
         self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
-        
 
     def test_delete_ISBN(self):
         TextbookDataStore.delete_ISBN("testisbn")
@@ -51,6 +51,12 @@ class SiteServiceTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
+    def test_submit_feedback(self):
+        request = RequestFactory().post('/submitfeedback', data={'FeedbackContent': 'testfeedback'})
+        SiteService.submit_Feedback_service(request)
+        testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
+        self.assertTrue(testfeedback.exists())
 
 class TextbookServiceTest(TestCase):
     @classmethod
