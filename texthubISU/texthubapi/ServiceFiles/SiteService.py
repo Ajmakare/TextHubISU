@@ -7,7 +7,7 @@ from django.shortcuts import render
 from ..DataStores.SiteDatastore import *
 class SiteService():
     
-    def submit_Feedback_service(request):
+    def submit_feedback_service(request):
         submitfeedback_form = SubmitFeedback(request.POST)
         if submitfeedback_form.is_valid():
             review = submitfeedback_form.cleaned_data['FeedbackContent']

@@ -156,7 +156,7 @@ class ViewsTest(TestCase):
         self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
 
-    def test_submit_feedback_view(self):
+    def test_home_submit_feedback_view(self):
         self.client.post('/home', data = {'FeedbackContent': 'feedbacktimewoo'})
         self.assertTrue(Feedback.objects.filter(feedback_content = 'feedbacktimewoo').exists())
 

@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 
 class TextbookService():
 
-    def retrieve_all_textBooks_service():
+    def retrieve_all_textbooks_service():
         return TextbookDataStore.retrieve_all_textBooks()
 
     def delete_ISBN_service(request):
