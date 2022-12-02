@@ -3,6 +3,7 @@ from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
 from texthubapi.DataStores.UserDataStore import *
 from texthubapi.ServiceFiles.SiteService import *
+from texthubapi.ServiceFiles.UserService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
@@ -93,17 +94,17 @@ class UserDataStoreTest(TestCase):
     def setUp(self):
         self.currentUser = User.objects.create_user(
             username='testusername',
-            email='testemail',
+            email='testemail@gmail.com',
             password='testpassword')
 
     def test_add_user_pass(self):
-        UserDataStore.add_user('testnewusername', 'testnewemail', 'testnewpassword')
+        UserDataStore.add_user('testnewusername', 'testnewemail@gmail.com', 'testnewpassword')
         login = self.client.login(username='testnewusername', password='testnewpassword')
         self.assertTrue(login)
 
     def test_add_user_fail(self):
         with self.assertRaises(AttributeError):
-            UserDataStore.add_user('testusername', 'testemail', 'testpassword')
+            UserDataStore.add_user('testusername', 'testemail@gmail.com', 'testpassword')
 
 
 class SiteServiceTest(TestCase):
@@ -165,6 +166,40 @@ class UserServiceTest(TestCase):
     def setUp(self):
         pass
 
+    def add_user_service_pass(self):
+        testrequest = RequestFactory().post('/admin', data={'Email': 'testEmail@gmail.com',
+            'Username':'testUsername', 'Password': 'testPassword'})
+        UserService.add_user_service(testrequest)
+        login = self.client.login(username='testUsername', password='testPassword')
+        self.assertTrue(login)
+
+    def add_user_service_invalidform(self):
+        testrequest = RequestFactory().post('/admin', data={'Email': 'testIncorrectEmailFormat',
+            'Username':'testUsername', 'Password': 'testPassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Form Invalid")
+
+    def add_user_service_duplicate_username(self):
+        self.initialUser = User.objects.create_user(
+            username='testusername',
+            email='testemail@gmail.com',
+            password='testpassword')
+        testrequest = RequestFactory().post('/admin', data={
+            'Email': 'othertestemail@gmail.com',
+            'Username':'testusername', 
+            'Password': 'othertestpassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Duplicate username or email already exists")
+
+    def add_user_service_duplicate_email(self):
+        self.initialUser = User.objects.create_user(
+            username='testusername',
+            email='testemail@gmail.com',
+            password='testpassword')
+        testrequest = RequestFactory().post('/admin', data={
+            'Email': 'testemail@gmail.com',
+            'Username':'othertestusername', 
+            'Password': 'othertestpassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Duplicate username or email already exists")
+    
 class ViewsTest(TestCase):
     @classmethod
     def setUp(self):
@@ -216,7 +251,8 @@ class ViewsTest(TestCase):
     
     def test_home_search_isbn_doesnotexist(self):
         response = self.client.post('/home', data = {'ISBN':'notindatabase'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        
 
 
 
