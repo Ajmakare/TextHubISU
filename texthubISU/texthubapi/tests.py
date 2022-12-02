@@ -198,6 +198,10 @@ class ViewsTest(TestCase):
     def test_home_search_ISBN_sort_by_price(self):
         response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortByPrice':'True'})
         self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+    
+    def test_home_search_isbn_doesnotexist(self):
+        response = self.client.post('/home', data = {'ISBN':'notindatabase'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
 
 
 
