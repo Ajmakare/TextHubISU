@@ -196,6 +196,28 @@ class ViewsTest(TestCase):
         response = self.client.post('/admin2/', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "ISBN not in database!")
+        
+    def test_home_search_ISBN_pass(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+    
+    def test_home_search_ISBN_both_sorts_fail(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True','SortByPrice':'True'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Please select only 1 sort method")
+    
+    def test_home_search_ISBN_sort_alphabetical(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)     
+    
+    def test_home_search_ISBN_sort_by_price(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortByPrice':'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+    
+    def test_home_search_isbn_doesnotexist(self):
+        response = self.client.post('/home', data = {'ISBN':'notindatabase'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+
 
 
 # # Note for others making tests - Tests create a seperate database from our app! So set up what you need.
