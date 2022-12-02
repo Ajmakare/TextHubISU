@@ -1,7 +1,10 @@
 from ..DataStores.TextbookDataStore import *
+import threading
+from ..scraperstuff.scraper import main
 
 
 class ScraperController:
     def scrape_controller():
-        print('calling populate db datastore')
-        return TextbookDataStore.populate_db()
+        example = threading.Thread(target=main)
+        example.start()
+        example.join()

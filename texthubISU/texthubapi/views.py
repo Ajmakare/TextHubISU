@@ -117,9 +117,7 @@ def admin(request):
                         request, 'ISBN not in database!')
             if 'WantToPopulate' in request.POST:
                 print('got to call pop')
-                example = threading.Thread(target=main)
-                example.start()
-                example.join()
+                ScraperController.scrape_controller()
             if "Email" in request.POST:
                 try:
                     UserController.add_user_controller(request)
