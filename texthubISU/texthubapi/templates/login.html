@@ -6,20 +6,22 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
+    {% load crispy_forms_tags %}  
+
 {% if messages %}
 {% for message in messages %}
 <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
 {% endfor %}
 {% endif %}
-
+<div style = "margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888">
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
     <!-- Using the formset -->
-    {{ login_form }}
+    {{ login_form|crispy }}
 
     <button type="submit" class="btn btn-primary">Login</button>
 
 </form>
-
-<a href="/admin2" class="btn btn-primary">Back to Admin Page</a>
+<a style = 'text-align: center; margin-top:10px' href="/admin2">Back to Admin Page</a>
+</div>
