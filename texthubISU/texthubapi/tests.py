@@ -98,7 +98,7 @@ class SiteServiceTest(TestCase):
 
     def test_submit_feedback(self):
         request = RequestFactory().post('/home', data={'FeedbackContent': 'testfeedback'})
-        SiteService.submit_Feedback_service(request)
+        SiteService.submit_feedback_service(request)
         testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
         self.assertTrue(testfeedback.exists())
 
@@ -132,7 +132,7 @@ class TextbookServiceTest(TestCase):
 
     def test_retrieve_all_textBooks_service(self):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
-        self.assertEqual(str(TextbookService.retrieve_all_textBooks_service()), str(queryset))
+        self.assertEqual(str(TextbookService.retrieve_all_textbooks_service()), str(queryset))
 
     def test_delete_ISBN_service(self):
         request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'testisbn'})
