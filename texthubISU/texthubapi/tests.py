@@ -190,6 +190,14 @@ class ViewsTest(TestCase):
         response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True','SortByPrice':'True'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Please select only 1 sort method")
+    
+    def test_home_search_ISBN_sort_alphabetical(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)     
+    
+    def test_home_search_ISBN_sort_by_price(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortByPrice':'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
 
 
 
