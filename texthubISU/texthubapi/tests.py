@@ -113,7 +113,7 @@ class SiteServiceTest(TestCase):
 
     def test_submit_feedback(self):
         request = RequestFactory().post('/home', data={'FeedbackContent': 'testfeedback'})
-        SiteService.submit_Feedback_service(request)
+        SiteService.submit_feedback_service(request)
         testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
         self.assertTrue(testfeedback.exists())
 
@@ -147,7 +147,7 @@ class TextbookServiceTest(TestCase):
 
     def test_retrieve_all_textBooks_service(self):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
-        self.assertEqual(str(TextbookService.retrieve_all_textBooks_service()), str(queryset))
+        self.assertEqual(str(TextbookService.retrieve_all_textbooks_service()), str(queryset))
 
     def test_delete_ISBN_service(self):
         request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'testisbn'})
@@ -171,29 +171,29 @@ class ViewsTest(TestCase):
         self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
         pass
 
-    def test_submit_feedback_view(self):
+    def test_home_submit_feedback_view(self):
         self.client.post('/home', data = {'FeedbackContent': 'feedbacktimewoo'})
         self.assertTrue(Feedback.objects.filter(feedback_content = 'feedbacktimewoo').exists())
 
     def test_admin_delete_ISBN_view(self):
-        self.client.post('/admin2', data = {'ISBNToDelete': 'testisbn'})
+        self.client.post('/admin2/', data = {'ISBNToDelete': 'testisbn'})
         textbook = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertFalse(textbook.exists())
 
     def test_admin_delete_ISBN_view_not_found(self):
-        response = self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
+        response = self.client.post('/admin2/', data = {'ISBNToDelete': 'notindatabase'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")    
         
         
     def test_admin_update_ISBN_view(self):
         old_book = Textbook.objects.filter(ISBN = 'testisbn')
-        self.client.post('/admin2', data = {'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
+        self.client.post('/admin2/', data = {'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
         updated_book = Textbook.objects.filter(ISBN = 'testisbn')
         self.assertNotEqual(old_book, updated_book)
         
     def test_admin_update_ISBN_view_not_found(self):
-        response = self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
+        response = self.client.post('/admin2/', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "ISBN not in database!")
 

@@ -12,9 +12,11 @@ from texthubapi.Controllers.TextbookController import *
 from texthubapi.Controllers.SiteController import *
 from texthubapi.Controllers.ScraperController import *
 from texthubapi.Controllers.UserController import *
-from .DataStores.ScraperDatastore import *
 from .forms import *
 from django.contrib import messages  # import messages
+from django.contrib.auth import login
+from texthubapi.scraperstuff.scraper import main
+import threading
 
 
 class Views():
@@ -115,7 +117,7 @@ class Views():
                             request, 'ISBN not in database!')
                 if 'WantToPopulate' in request.POST:
                     print('got to call pop')
-                    ScraperController.populateDB()
+                    ScraperController.scrape_controller()
                 if "Email" in request.POST:
                     try:
                         UserController.add_user_controller(request)
@@ -123,7 +125,7 @@ class Views():
                     except:
                         messages.error(
                             request, 'Could not create user!')
-                
+
             context = {
                 'addisbn_form': AddISBN,
                 'deleteisbn_form': DeleteISBN,
@@ -150,7 +152,7 @@ class Views():
         except:
             return "Could not request an ISBN"
 
-    class retrieve_View(ListView):
+    class RetrieveView(ListView):
         allow_empty = False
         template_name = 'retrieve.html'
         context_object_name = 'textbooks'
@@ -160,7 +162,18 @@ class Views():
             return queryset
 
 
-    # def login(request, template_name='registration/login.html'):
-    #     if request.method == "POST":
+        # def login(request, template_name='registration/login.html'):
+        #     if request.method == "POST":
 
-    #     return render(request, template_name, context={'login_form':Login})
+        #     return render(request, template_name, context={'login_form':Login})
+        
+    def login_view(request):
+
+        if request.method == 'POST':
+
+            if (UserController.login_controller(request)):
+                return redirect('admin2')
+            else:
+                messages.error(request, "Username or password was incorrect!")
+
+        return render(request, 'login.html', context={'login_form': LoginForm})
