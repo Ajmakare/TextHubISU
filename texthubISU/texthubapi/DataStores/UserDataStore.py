@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 
 
 class UserDataStore:
-    def add_user(user):
+    def add_user(username, password, email):
         try:
-            user.save()
+            User.objects.create_user(username=username,
+                password=password,email=email)
         except:
-            return "Could not add user"
+            raise AttributeError
 
     def read_user(username2):
         try:

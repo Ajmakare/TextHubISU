@@ -91,19 +91,19 @@ class TextbookDataStoreTest(TestCase):
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
-
-    def test_add_user_pass(self):
         self.currentUser = User.objects.create_user(
             username='testusername',
             email='testemail',
             password='testpassword')
-        UserDataStore.add_user(self.currentUser)
-        login = self.client.login(username='testusername', password='testpassword')
+
+    def test_add_user_pass(self):
+        UserDataStore.add_user('testnewusername', 'testnewemail', 'testnewpassword')
+        login = self.client.login(username='testnewusername', password='testnewpassword')
         self.assertTrue(login)
 
     def test_add_user_fail(self):
-        pass
+        with self.assertRaises(AttributeError):
+            UserDataStore.add_user('testusername', 'testemail', 'testpassword')
 
 
 class SiteServiceTest(TestCase):
