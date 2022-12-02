@@ -1,13 +1,13 @@
 from django.urls import path, include
 from rest_framework import routers
-from . import views
+from .views import Views
 
 urlpatterns = [
-    path('textbooks/<ISBN>/<sort>', views.DoSearchView.as_view()),
+    path('textbooks/<ISBN>/<sort>', Views.DoSearchView.as_view()),
     path('', include('rest_framework.urls', namespace='rest_framework')),
-    path('admin2', views.admin, name="admin"),
+    path('admin2', Views.admin, name="admin"),
     # path('login2', views.login, name = "login"),
-    path('home', views.home_view, name='home'),
-    path('sendrequest/', views.sendRequest_view, name = "sendrequest"),
-    path('retrieve', views.retrieve_View.as_view())
+    path('home', Views.home_view, name='home'),
+    path('sendrequest/', Views.sendRequest_view, name = "sendrequest"),
+    path('retrieve', Views.retrieve_View.as_view())
 ]
