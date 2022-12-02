@@ -150,17 +150,17 @@ class Views():
         except:
             return "Could not request an ISBN"
 
-class RetrieveView(ListView):
-    allow_empty = False
-    template_name = 'retrieve.html'
-    context_object_name = 'textbooks'
-    def get_queryset(self):
-        queryset = TextbookController.retrieve_all_textBooks_controller()
-        # TextbookController.update_view_count_controller(isbn)
-        return queryset
+    class RetrieveView(ListView):
+        allow_empty = False
+        template_name = 'retrieve.html'
+        context_object_name = 'textbooks'
+        def get_queryset(self):
+            queryset = TextbookController.retrieve_all_textBooks_controller()
+            # TextbookController.update_view_count_controller(isbn)
+            return queryset
 
 
-    # def login(request, template_name='registration/login.html'):
-    #     if request.method == "POST":
+        # def login(request, template_name='registration/login.html'):
+        #     if request.method == "POST":
 
-    #     return render(request, template_name, context={'login_form':Login})
+        #     return render(request, template_name, context={'login_form':Login})
