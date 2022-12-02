@@ -181,6 +181,11 @@ class ViewsTest(TestCase):
         response = self.client.post('/admin2/', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "ISBN not in database!")
+        
+    def test_home_search_ISBN_pass(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
 
 
 # # Note for others making tests - Tests create a seperate database from our app! So set up what you need.
