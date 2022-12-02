@@ -4,11 +4,12 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium import webdriver
 import sys
-from ..models import Textbook
+from ..models import *
 from abc import ABC
 from selenium.webdriver.chrome.options import Options
 import json
 from itertools import chain
+from ..DataStores.TextbookDataStore import *
 import os
 import PyPDF2
 
@@ -23,36 +24,15 @@ class Scraper(ABC):  # the abstracgt class
     def scrapeItem():
         pass
 
-    def obtainISBNs():
-        # reading the pdf in a binary mode "rb"
-        inputFile = open('texthubapi/scraperstuff/isutextbookspdf.pdf', 'rb')
-        reader = PyPDF2.PdfFileReader(inputFile)
-        listOfISBNs = []
-        repeatedWords = list()
-        for i in range(reader.numPages):
-            currentPage = reader.getPage(i)
-            text = currentPage.extract_text()
-            words = text.split(' ')
-
-            for j in range(len(words)):
-                # removing all hyphens before collecting isbn substring
-                curISBN = words[j].replace('-', '')
-                curIndex = curISBN.find("978")
-                curISBN = curISBN[curIndex:curIndex+13]
-                if (curIndex != -1 and not repeatedWords.__contains__(curISBN)):
-                    repeatedWords.append(curISBN)
-                    listOfISBNs.append(curISBN+"\n")
-
-        inputFile.close()
-        return listOfISBNs
+    def obtain_ISBNs():
+        pass
 
 
-class ScrapeTextbook(Scraper):
-    def scrapeItem(isbn):
+class TextbookScraper(Scraper):
+    def scrape_item(isbn):
         price = " "
         author = " "
         bookName = " "
-        textbook = [isbn, author, bookName, price, 'Amazon.com']
         # put chrome_options = options next to service param to make it headless :D
         # chrome_options=options
         print("attempting to run the scraper")
@@ -81,6 +61,7 @@ class ScrapeTextbook(Scraper):
             priceElement = driver.find_element(
                 by=By.CSS_SELECTOR, value='span[class="a-price-whole"]')
             price = str(priceElement.text)
+            print(price)
 
         except Exception as e:
             print('error price')
@@ -101,28 +82,56 @@ class ScrapeTextbook(Scraper):
         except Exception as e:
             print('error bookname')
 
-        if textbook[0] != None:
+        textbook = [isbn, author, bookName, price, 'Amazon.com']
+        if textbook[0] != None and textbook[3] != ' ':
 
             new_textbook = Textbook()
             new_textbook.ISBN = textbook[0]
             new_textbook.author = textbook[1]
             new_textbook.name = textbook[2]
+            price1 = float(textbook[3])
             new_textbook.view_count = 0
+            new_source = Source(
+                price=price1, url=textbook[4], ISBN=new_textbook)
+            TextbookDataStore.add_ISBN(new_textbook)
+            TextbookDataStore.add_source(new_source, 'Amazon.com')
+            Textbook
             print('about to save a mf textbookzz')
             print(new_textbook.name)
-            new_textbook.save()
         # print (jsonpart)
         driver.quit()
 
         # message = driver.find_element(by=By.ID, value="message")
         # value = message.text
         # assert value == "Received!"
+    def obtainISBNs():
+        # reading the pdf in a binary mode "rb"
+        inputFile = open('texthubapi/scraperstuff/isutextbookspdf.pdf', 'rb')
+        reader = PyPDF2.PdfFileReader(inputFile)
+        listOfISBNs = []
+        repeatedWords = list()
+        for i in range(reader.numPages):
+            currentPage = reader.getPage(i)
+            text = currentPage.extract_text()
+            words = text.split(' ')
+
+            for j in range(len(words)):
+                # removing all hyphens before collecting isbn substring
+                curISBN = words[j].replace('-', '')
+                curIndex = curISBN.find("978")
+                curISBN = curISBN[curIndex:curIndex+13]
+                if (curIndex != -1 and not repeatedWords.__contains__(curISBN)):
+                    repeatedWords.append(curISBN)
+                    listOfISBNs.append(curISBN+"\n")
+
+        inputFile.close()
+        return listOfISBNs
 
 
 def main():
     # if sys.argv[1] == 'pleasejustwork':
 
-    isbns = Scraper.obtainISBNs()
+    isbns = TextbookScraper.obtainISBNs()
     count = 0
 
     # Strips the newline character
@@ -131,5 +140,5 @@ def main():
     for line in isbns:
         count += 1
 
-        output = ScrapeTextbook.scrapeItem(line.strip())
+        output = TextbookScraper.scrape_item(line.strip())
         print(output)
