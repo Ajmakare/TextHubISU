@@ -1,24 +1,13 @@
 from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
+from texthubapi.DataStores.UserDataStore import *
 from texthubapi.ServiceFiles.SiteService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
+from django.contrib.auth import get_user_model
 
-<<<<<<< HEAD
-class UserDatastoreTest(TestCase):
-    @classmethod
-    def setUp(self):
-        testUser = User.objects.create_user('user', 'email', 'Password')
-
-    def test_add_user_pass(self):
-        
-
-
-# Note for others making tests - Tests create a seperate database from our app! So set up what you need.
-class TextbookTest(TestCase):
-=======
 # Import stuff accordingly
 class ScraperDataStoreTest(TestCase):
     @classmethod
@@ -31,7 +20,6 @@ class SiteDataStoreTest(TestCase):
         pass
 
 class TextbookDataStoreTest(TestCase):
->>>>>>> main
     @classmethod
     def setUp(self):
         self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
@@ -104,6 +92,19 @@ class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
+    def test_add_user_pass(self):
+        self.currentUser = User.objects.create_user(
+            username='testusername',
+            email='testemail',
+            password='testpassword')
+        UserDataStore.add_user(self.currentUser)
+        login = self.client.login(username='testusername', password='testpassword')
+        self.assertTrue(login)
+
+    def test_add_user_fail(self):
+        pass
+
 
 class SiteServiceTest(TestCase):
     @classmethod
@@ -182,23 +183,6 @@ class ViewsTest(TestCase):
     def test_admin_delete_ISBN_view_not_found(self):
         response = self.client.post('/admin2', data = {'ISBNToDelete': 'notindatabase'})
         messages = list(get_messages(response.wsgi_request))
-<<<<<<< HEAD
-        self.assertEqual(str(messages[0]), 'ISBN not in database!')
-
-    # Test requesting an ISBN after searching an invalid ISBN
-    def test_request_ISBN_pass(self):
-        response = self.client.post('/home', data = {'ISBN': 'testrequestisbn','SortAlphabetical': False, 'SortByPrice': False}, follow=True)
-        self.assertRedirects(response, '/sendrequest')
-        self.client.post('/sendrequest', data = {'RequestButton': True})
-        requestedISBN = Request.objects.filter(requestISBN = 'testrequestisbn')
-        self.assertTrue(requestedISBN.exists())
-
-    def test_request_ISBN_noredirect(self):
-        response = self.client.post('/home', data = {'ISBN': 'testisbn','SortAlphabetical': False, 'SortByPrice': False}, follow=True)
-        not self.assertRedirects(response, '/sendrequest')
-        RequestedISBN = Request.objects.filter(requestISBN = '')
-        self.assertFalse(RequestedISBN.exists())
-=======
         self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")    
         
         
@@ -294,4 +278,3 @@ class ViewsTest(TestCase):
 #         response = self.client.post('/admin2', data = {'ISBNToUpdate': 'notindatabase','name':'new name', 'author': 'new author'})
 #         messages = list(get_messages(response.wsgi_request))
 #         self.assertEqual(str(messages[0]), 'ISBN not in database!')
->>>>>>> main
