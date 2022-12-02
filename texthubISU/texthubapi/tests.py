@@ -184,7 +184,12 @@ class ViewsTest(TestCase):
         
     def test_home_search_ISBN_pass(self):
         response = self.client.post('/home', data = {'ISBN':'testisbn'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+    
+    def test_home_search_ISBN_both_sorts_fail(self):
+        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True','SortByPrice':'True'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(str(messages[0]), "Please select only 1 sort method")
 
 
 
