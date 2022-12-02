@@ -1,6 +1,7 @@
-from ..DataStores.ScraperDatastore import *
+from ..DataStores.TextbookDataStore import *
 
 
 class ScraperController:
-    def populateDB():
-        return ScraperDatastore.PopulateDatabase()
+    def scrape_controller():
+        print('calling populate db datastore')
+        return TextbookDataStore.populate_db()

@@ -12,10 +12,11 @@ from texthubapi.Controllers.TextbookController import *
 from texthubapi.Controllers.SiteController import *
 from texthubapi.Controllers.ScraperController import *
 from texthubapi.Controllers.UserController import *
-from .DataStores.ScraperDatastore import *
 from .forms import *
 from django.contrib import messages  # import messages
 from django.contrib.auth import login
+from texthubapi.scraperstuff.scraper import main
+import threading
 
 
 def index(request):
@@ -116,7 +117,9 @@ def admin(request):
                         request, 'ISBN not in database!')
             if 'WantToPopulate' in request.POST:
                 print('got to call pop')
-                ScraperController.populateDB()
+                example = threading.Thread(target=main)
+                example.start()
+                example.join()
             if "Email" in request.POST:
                 try:
                     UserController.add_user_controller(request)
@@ -163,7 +166,7 @@ class retrieveView(ListView):
         return queryset
 
 
-def loginView(request):
+def login_view(request):
 
     if request.method == 'POST':
 
