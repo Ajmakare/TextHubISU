@@ -1,3 +1,4 @@
+from sqlite3 import IntegrityError
 from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
@@ -16,6 +17,12 @@ class SiteDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
+    def test_submit_feedback(self):
+        feedback_text = "This is a test feedback"
+        feedback = Feedback(feedback_content=feedback_text)
+        SiteDatastore.submit_feedback(feedback)
+        self.assertTrue(Feedback.objects.filter(feedback_content=feedback_text).exists())
 
 class TextbookDataStoreTest(TestCase):
     @classmethod
@@ -66,6 +73,17 @@ class TextbookDataStoreTest(TestCase):
     def test_delete_ISBN_not_found(self):
         with self.assertRaises(ValueError):
             TextbookDataStore.delete_ISBN("notindatabase")
+
+    def test_add_ISBN(self):
+        new_textbook = Textbook(ISBN = 'newisbn', author = 'Noah', name = 'how to code 2', view_count = 0)
+        TextbookDataStore.add_ISBN(new_textbook)
+        self.assertTrue(Textbook.objects.filter(ISBN = 'newisbn').exists())
+
+    # adding book that's already in database
+    def test_add_ISBN_fail(self):
+        newtestbook = Textbook(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+        with self.assertRaises(AttributeError):
+            TextbookDataStore.add_ISBN(newtestbook)
 
     def test_update_view_count(self):
         TextbookDataStore.update_view_count("testisbn")

@@ -53,10 +53,10 @@ class TextbookDataStore():
 
 
     def add_ISBN(textbook):
-        try:
+        if Textbook.objects.filter(pk=textbook.ISBN).exists():
+            raise AttributeError
+        else:
             textbook.save()
-        except:
-            return "Add ISBN exception"
 
     def update_ISBN(textbook):
         try:
