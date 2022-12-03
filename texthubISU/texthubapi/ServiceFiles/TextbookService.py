@@ -66,7 +66,7 @@ class TextbookService():
         else:
             return "Invalid form"
 
-
+    #Takes ISBN rather than request due to the need of session in views.py which doesnt like holding requests
     def request_ISBN_service(ISBN):
         isbn_request = ISBN['ISBN']
         new_request = Request(requestISBN = isbn_request)

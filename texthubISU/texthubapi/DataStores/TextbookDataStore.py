@@ -38,7 +38,7 @@ class TextbookDataStore():
         try:
             request_isbn.save()
         except:
-            return "Could not request an ISBN"
+            raise AttributeError
 
     def retrieve_all_textBooks():
         try:
