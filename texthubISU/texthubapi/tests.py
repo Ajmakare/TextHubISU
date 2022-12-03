@@ -2,11 +2,13 @@ from sqlite3 import IntegrityError
 from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
+from texthubapi.DataStores.UserDataStore import *
 from texthubapi.ServiceFiles.SiteService import *
 from texthubapi.ServiceFiles.UserService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
+from django.contrib.auth import get_user_model
 
 # Import stuff accordingly
 class ScraperDataStoreTest(TestCase):
@@ -109,6 +111,19 @@ class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
+    def test_add_user_pass(self):
+        self.currentUser = User.objects.create_user(
+            username='testusername',
+            email='testemail',
+            password='testpassword')
+        UserDataStore.add_user(self.currentUser)
+        login = self.client.login(username='testusername', password='testpassword')
+        self.assertTrue(login)
+
+    def test_add_user_fail(self):
+        pass
+
 
 class SiteServiceTest(TestCase):
     @classmethod
