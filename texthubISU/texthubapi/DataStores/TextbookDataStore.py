@@ -8,7 +8,6 @@ from ..forms import *
 from django.shortcuts import *
 from django.db.models import Prefetch, F
 from django.db.models.functions import Lower
-from ..scraperstuff.scraper import main
 
 
 class TextbookDataStore():

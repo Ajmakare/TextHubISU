@@ -1,10 +1,9 @@
 from ..DataStores.TextbookDataStore import *
 import threading
 from ..scraperstuff.scraper import main
+from ..ServiceFiles.ScraperService import *
 
 
 class ScraperController:
     def scrape_controller():
-        example = threading.Thread(target=main)
-        example.start()
-        example.join()
+        return ScraperService.scraper_service()
