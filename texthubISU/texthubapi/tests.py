@@ -13,9 +13,6 @@ from .views import *
 from .scraperstuff.scraper import TextbookScraper
 from .scraperstuff.scraper import *
 
-# Import stuff accordingly
-
-
 class ScraperTest(TestCase): 
     @classmethod
     def setUp(self):
@@ -28,12 +25,6 @@ class ScraperTest(TestCase):
     def test_scraper_fake_isbn(self):
         result = TextbookScraper.scrape_item('97800609353467')
         self.assertFalse(Textbook.objects.filter(ISBN='97800609353467').exists())
-
-
-class ScraperDataStoreTest(TestCase):
-    @classmethod
-    def setUp(self):
-        pass
 
 
 class SiteDataStoreTest(TestCase):
