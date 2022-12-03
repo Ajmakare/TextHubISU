@@ -2,6 +2,7 @@ from django.test import TestCase, RequestFactory
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
 from texthubapi.ServiceFiles.SiteService import *
+from texthubapi.ServiceFiles.UserService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
@@ -148,7 +149,12 @@ class TextbookServiceTest(TestCase):
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
+        User.objects.create_user('admin', 'admin@gmail.com', 'admin')
+    
+    def test_login_service_pass(self):
+        request = RequestFactory().post('/login2/', data={'Username': 'admin','Password':'admin'})
+        login = UserService.login_service(request)
+        self.assertTrue(login)
 
 class ViewsTest(TestCase):
     @classmethod
