@@ -126,23 +126,14 @@ class scraperTest(TestCase):
 
     def test_obtainISBNs_pass(self):
         file = open("texthubapi/TestingFiles/ISUISBNs_validtesting.txt", "r")
+        currentList = TextbookScraper.obtainISBNs()
 
         Validlist = []
         for line in file:
             stripped_line = line.strip()
-            print(stripped_line)
             Validlist.append(stripped_line)
 
-        currentList = TextbookScraper.obtainISBNs()
-        print(len(Validlist))
-        print(len(currentList))
-        if(Validlist==currentList):
-            self.assertTrue(True)
-        else:
-            self.assertTrue(False)
-        
-
-        #self.assertEqual(Validlist,currentList)
+        self.assertTrue(len(currentList)==len(Validlist))
 
 class SiteServiceTest(TestCase):
     @classmethod
