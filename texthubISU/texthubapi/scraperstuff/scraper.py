@@ -9,7 +9,7 @@ from abc import ABC
 from selenium.webdriver.chrome.options import Options
 import json
 from itertools import chain
-from ..DataStores.TextbookDataStore import *
+from texthubapi.DataStores.TextbookDataStore import TextbookDataStore
 import os
 import PyPDF2
 
@@ -35,6 +35,7 @@ class TextbookScraper(Scraper):
         bookName = " "
         # put chrome_options = options next to service param to make it headless :D
         # chrome_options=options
+        textbook = [isbn, author, bookName, price, 'Amazon.com']
         print("attempting to run the scraper")
         driver = webdriver.Chrome(service=service)
         driver.get("https://www.amazon.com")
@@ -66,10 +67,12 @@ class TextbookScraper(Scraper):
         except Exception as e:
             print('error price')
         try:
-            # authorElement = driver.find_element(
-            #     by=By.CSS_SELECTOR, value='span[class="div.a-row"]')
             authorElement = driver.find_element(
-                By.XPATH, '//span[text()="by "]')
+                by=By.CSS_SELECTOR, value='a[class="a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style"]')
+
+            # <a class="a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style" href="/Harper-Lee/e/B00456LE3M?ref=sr_ntt_srch_lnk_1&amp;qid=1670095092&amp;sr=1-1">Harper Lee</a>
+            # authorElement = driver.find_element(
+            #     By.XPATH, '//span[text()="by "]')
             author = str(authorElement.text)
 
         except Exception as e:
@@ -82,7 +85,9 @@ class TextbookScraper(Scraper):
         except Exception as e:
             print('error bookname')
 
+        print(textbook)
         textbook = [isbn, author, bookName, price, 'Amazon.com']
+
         if textbook[0] != None and textbook[3] != ' ':
 
             new_textbook = Textbook()

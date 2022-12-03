@@ -5,27 +5,48 @@ from texthubapi.ServiceFiles.SiteService import *
 from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
+from .scraperstuff.scraper import *
 
 # Import stuff accordingly
+
+
+class ScraperTest(TestCase): 
+    @classmethod
+    def setUp(self):
+        pass
+
+    def test_smoke_scraper(self):
+        self.assertFalse(Textbook.objects.filter(ISBN='9780060935467').exists())
+        result = TextbookScraper.scrape_item('9780060935467')
+        self.assertTrue(Textbook.objects.filter(ISBN='9780060935467').exists())
+    def test_scraper_fake_isbn(self):
+        result = TextbookScraper.scrape_item('97800609353467')
+        self.assertFalse(Textbook.objects.filter(ISBN='97800609353467').exists())
+
+
 class ScraperDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
 
 class SiteDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
 
+
 class TextbookDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
-        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+        self.textbook = Textbook.objects.create(
+            ISBN='testisbn', author='Aidan', name='how to code', view_count=0)
 
     def test_submit_review_pass(self):
-        new_review = Review(review_content="This is a review", ISBN = Textbook.objects.get(pk = 'testisbn'))
+        new_review = Review(review_content="This is a review",
+                            ISBN=Textbook.objects.get(pk='testisbn'))
         TextbookDataStore.submit_review(new_review)
-        found_review = Review.objects.filter(review_content = 'This is a review')
+        found_review = Review.objects.filter(review_content='This is a review')
         self.assertTrue(found_review)
 
     def test_submit_review_fail(self):
@@ -35,28 +56,34 @@ class TextbookDataStoreTest(TestCase):
 
     def test_do_search_pass(self):
         queryset = TextbookDataStore.do_search('testisbn', 'default')
-        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+        self.assertEqual(str(
+            queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
 
     def test_do_search_fail(self):
         queryset = TextbookDataStore.do_search('notindatabase', 'default')
-        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet []>, \'sources\': <QuerySet []>}')
+        self.assertEqual(
+            str(queryset), '{\'bookinfos\': <QuerySet []>, \'sources\': <QuerySet []>}')
 
     def test_do_search_sortalphabetically_pass(self):
         queryset = TextbookDataStore.do_search('testisbn', 'alpha')
-        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
-    
+        self.assertEqual(str(
+            queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+
     def test_do_search_sortprice_pass(self):
         queryset = TextbookDataStore.do_search('testisbn', 'price')
-        self.assertEqual(str(queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
+        self.assertEqual(str(
+            queryset), '{\'bookinfos\': <QuerySet [<Textbook: Textbook object (testisbn)>]>, \'sources\': <QuerySet []>}')
 
     def test_retrieve_all_textBooks(self):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
-        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+        self.assertEqual(
+            str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
 
     def test_retrieve_all_textBooks_empty_database(self):
         Textbook.objects.all().delete()
         queryset = "{'bookinfos': <QuerySet []>}"
-        self.assertEqual(str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
+        self.assertEqual(
+            str(TextbookDataStore.retrieve_all_textBooks()), str(queryset))
 
     def test_delete_ISBN(self):
         TextbookDataStore.delete_ISBN("testisbn")
@@ -71,25 +98,26 @@ class TextbookDataStoreTest(TestCase):
         TextbookDataStore.update_view_count("testisbn")
         testbook = Textbook.objects.get(ISBN="testisbn")
         self.assertEqual(testbook.view_count, 1)
-        
+
     def test_update_ISBN_pass(self):
-        old_textbook = Textbook.objects.filter(ISBN = 'testisbn')
+        old_textbook = Textbook.objects.filter(ISBN='testisbn')
         updated_textbook = Textbook.objects.get(pk='testisbn')
         updated_textbook.name = 'new name'
         updated_textbook.author = 'new author'
         TextbookDataStore.update_ISBN(updated_textbook)
-        self.assertNotEqual(old_textbook, Textbook.objects.get(pk='testisbn')) 
-          
+        self.assertNotEqual(old_textbook, Textbook.objects.get(pk='testisbn'))
+
     def test_update_ISBN_fail(self):
         notatextbook = 'I am not a textbook'
         with self.assertRaises(AttributeError):
             TextbookDataStore.update_ISBN(notatextbook)
 
-        
+
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
         pass
+
 
 class SiteServiceTest(TestCase):
     @classmethod
@@ -97,34 +125,39 @@ class SiteServiceTest(TestCase):
         pass
 
     def test_submit_feedback(self):
-        request = RequestFactory().post('/home', data={'FeedbackContent': 'testfeedback'})
+        request = RequestFactory().post(
+            '/home', data={'FeedbackContent': 'testfeedback'})
         SiteService.submit_feedback_service(request)
         testfeedback = Feedback.objects.filter(feedback_content="testfeedback")
         self.assertTrue(testfeedback.exists())
 
+
 class TextbookServiceTest(TestCase):
     @classmethod
     def setUp(self):
-        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
-    
+        self.textbook = Textbook.objects.create(
+            ISBN='testisbn', author='Aidan', name='how to code', view_count=0)
+
     def test_update_ISBN_pass(self):
-        old_book = Textbook.objects.filter(ISBN = 'testisbn')
-        request = RequestFactory().post('/admin2', data={'ISBNToUpdate': 'testisbn', 'name':'new name', 'author':'new author'})
+        old_book = Textbook.objects.filter(ISBN='testisbn')
+        request = RequestFactory().post('/admin2',
+                                        data={'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
         TextbookService.update_ISBN_service(request)
-        updated_book = Textbook.objects.filter(ISBN = 'testisbn')
-        self.assertNotEqual(old_book, updated_book)    
-        
+        updated_book = Textbook.objects.filter(ISBN='testisbn')
+        self.assertNotEqual(old_book, updated_book)
+
     def test_update_ISBN_fail(self):
         notatextbook = 'I am not a textbook'
         with self.assertRaises(AttributeError):
             TextbookService.update_ISBN_service(notatextbook)
-            
+
     def test_review_pass(self):
-        request = RequestFactory().post('/home', data={'ISBNToReview': 'testisbn', 'ReviewContent':'This book is awesome!'})
+        request = RequestFactory().post(
+            '/home', data={'ISBNToReview': 'testisbn', 'ReviewContent': 'This book is awesome!'})
         TextbookService.submit_review_service(request)
-        review = Review.objects.filter(review_content = 'This book is awesome!')
+        review = Review.objects.filter(review_content='This book is awesome!')
         self.assertTrue(review.exists())
-        
+
     def test_review_fail(self):
         notareview = 'I am not a review'
         with self.assertRaises(AttributeError):
@@ -132,76 +165,90 @@ class TextbookServiceTest(TestCase):
 
     def test_retrieve_all_textBooks_service(self):
         queryset = "{'bookinfos': <QuerySet [<Textbook: Textbook object (testisbn)>]>}"
-        self.assertEqual(str(TextbookService.retrieve_all_textbooks_service()), str(queryset))
+        self.assertEqual(
+            str(TextbookService.retrieve_all_textbooks_service()), str(queryset))
 
     def test_delete_ISBN_service(self):
-        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'testisbn'})
+        request = RequestFactory().post(
+            '/deleteisbn', data={'ISBNToDelete': 'testisbn'})
         TextbookService.delete_ISBN_service(request)
         testbook = Textbook.objects.filter(ISBN="testisbn")
         self.assertFalse(testbook.exists())
 
     def test_delete_ISBN_service_not_found(self):
-        request = RequestFactory().post('/deleteisbn', data={'ISBNToDelete': 'notindatabase'})
+        request = RequestFactory().post(
+            '/deleteisbn', data={'ISBNToDelete': 'notindatabase'})
         with self.assertRaises(ValueError):
             TextbookService.delete_ISBN_service(request)
+
 
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
         pass
 
+
 class ViewsTest(TestCase):
     @classmethod
     def setUp(self):
-        self.textbook = Textbook.objects.create(ISBN = 'testisbn', author = 'Aidan', name = 'how to code', view_count = 0)
+        self.textbook = Textbook.objects.create(
+            ISBN='testisbn', author='Aidan', name='how to code', view_count=0)
         pass
 
     def test_home_submit_feedback_view(self):
-        self.client.post('/home', data = {'FeedbackContent': 'feedbacktimewoo'})
-        self.assertTrue(Feedback.objects.filter(feedback_content = 'feedbacktimewoo').exists())
+        self.client.post('/home', data={'FeedbackContent': 'feedbacktimewoo'})
+        self.assertTrue(Feedback.objects.filter(
+            feedback_content='feedbacktimewoo').exists())
 
     def test_admin_delete_ISBN_view(self):
-        self.client.post('/admin2/', data = {'ISBNToDelete': 'testisbn'})
-        textbook = Textbook.objects.filter(ISBN = 'testisbn')
+        self.client.post('/admin2/', data={'ISBNToDelete': 'testisbn'})
+        textbook = Textbook.objects.filter(ISBN='testisbn')
         self.assertFalse(textbook.exists())
 
     def test_admin_delete_ISBN_view_not_found(self):
-        response = self.client.post('/admin2/', data = {'ISBNToDelete': 'notindatabase'})
+        response = self.client.post(
+            '/admin2/', data={'ISBNToDelete': 'notindatabase'})
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(str(messages[0]), "Could not delete ISBN from database!")    
-        
-        
+        self.assertEqual(str(messages[0]),
+                         "Could not delete ISBN from database!")
+
     def test_admin_update_ISBN_view(self):
-        old_book = Textbook.objects.filter(ISBN = 'testisbn')
-        self.client.post('/admin2/', data = {'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
-        updated_book = Textbook.objects.filter(ISBN = 'testisbn')
+        old_book = Textbook.objects.filter(ISBN='testisbn')
+        self.client.post(
+            '/admin2/', data={'ISBNToUpdate': 'testisbn', 'name': 'new name', 'author': 'new author'})
+        updated_book = Textbook.objects.filter(ISBN='testisbn')
         self.assertNotEqual(old_book, updated_book)
-        
+
     def test_admin_update_ISBN_view_not_found(self):
-        response = self.client.post('/admin2/', data = {'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
+        response = self.client.post(
+            '/admin2/', data={'ISBNToUpdate': 'notindatabase', 'name': 'new name', 'author': 'new author'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "ISBN not in database!")
-        
+
     def test_home_search_ISBN_pass(self):
-        response = self.client.post('/home', data = {'ISBN':'testisbn'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
-    
+        response = self.client.post('/home', data={'ISBN': 'testisbn'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
     def test_home_search_ISBN_both_sorts_fail(self):
-        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True','SortByPrice':'True'})
+        response = self.client.post(
+            '/home', data={'ISBN': 'testisbn', 'SortAlphabetical': 'True', 'SortByPrice': 'True'})
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(str(messages[0]), "Please select only 1 sort method")
-    
+
     def test_home_search_ISBN_sort_alphabetical(self):
-        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortAlphabetical':'True'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)     
-    
+        response = self.client.post(
+            '/home', data={'ISBN': 'testisbn', 'SortAlphabetical': 'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
     def test_home_search_ISBN_sort_by_price(self):
-        response = self.client.post('/home', data = {'ISBN':'testisbn', 'SortByPrice':'True'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
-    
+        response = self.client.post(
+            '/home', data={'ISBN': 'testisbn', 'SortByPrice': 'True'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
     def test_home_search_isbn_doesnotexist(self):
-        response = self.client.post('/home', data = {'ISBN':'notindatabase'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+        response = self.client.post('/home', data={'ISBN': 'notindatabase'})
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
 
 
 
@@ -278,7 +325,7 @@ class ViewsTest(TestCase):
 #         old_textbook = Textbook.objects.filter(ISBN = 'testisbn')
 #         self.client.post('/admin2', data = {'ISBNToUpdate': 'testisbn','name':'new name', 'author': 'new author'})
 #         new_textbook = Textbook.objects.filter(ISBN = 'testisbn')
-#         self.assertNotEqual(old_textbook, new_textbook) 
+#         self.assertNotEqual(old_textbook, new_textbook)
 
 #     # Test update a textbook in database fail
 #     def test_update_ISBN_fail(self):
