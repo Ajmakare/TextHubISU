@@ -69,6 +69,7 @@ class TextbookService():
     #Takes ISBN rather than request due to the need of session in views.py which doesnt like holding requests
     def request_ISBN_service(ISBN):
         isbn_request = ISBN['ISBN']
+        print(isbn_request)
         new_request = Request(requestISBN = isbn_request)
         TextbookDataStore.request_ISBN(new_request)
 

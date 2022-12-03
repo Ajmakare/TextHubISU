@@ -189,12 +189,12 @@ class TextbookServiceTest(TestCase):
         with self.assertRaises(ValueError):
             TextbookService.delete_ISBN_service(request)
 
-    def test_request_isbn_pass(self):
-        request = RequestFactory().post('/home', data={'ISBN': 'testrequest'})
+    def test_request_isbn_service_pass(self):
+        request = RequestFactory().post('/home', data={'ISBN' : 'testrequest'})
         ISBN_to_request = request.POST
         TextbookService.request_ISBN_service(ISBN_to_request)
-        testRequest = Request.objects.filter(ISBN="testrequest")
-        self.assertFalse(testRequest.exists())
+        testRequest = Request.objects.filter(requestISBN="testrequest")
+        self.assertTrue(testRequest.exists())
 
 class UserServiceTest(TestCase):
     @classmethod

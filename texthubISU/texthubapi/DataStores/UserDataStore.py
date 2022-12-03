@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 
 class UserDataStore:
-    def add_user(username, password, email):
+    def add_user(username, email, password):
         try:
             User.objects.create_user(username=username,
                 password=password,email=email)
