@@ -1,5 +1,5 @@
 from sqlite3 import IntegrityError
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from texthubapi.Controllers.TextbookController import *
 from texthubapi.DataStores.TextbookDataStore import *
 from texthubapi.ServiceFiles.SiteService import *
@@ -167,7 +167,13 @@ class TextbookServiceTest(TestCase):
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
+        user = User.objects.create_user(username='admin', password='admin', email="johnwhite@gmail.com")
         pass
+
+    def test_user_login(self):
+        c = Client()
+        response = c.post('/login2', {'username': 'admin', 'password': 'admin'})
+        self.assertEqual(response.status_code, 301)
 
 class ViewsTest(TestCase):
     @classmethod
