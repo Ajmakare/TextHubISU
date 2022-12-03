@@ -167,12 +167,7 @@ class TextbookServiceTest(TestCase):
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
-        User.objects.create_user('admin', 'admin@gmail.com', 'admin')
-    
-    def test_login_service_pass(self):
-        request = RequestFactory().post('/login2/', data={'Username': 'admin','Password':'admin'})
-        login = UserService.login_service(request)
-        self.assertTrue(login)
+        pass
 
 class ViewsTest(TestCase):
     @classmethod
