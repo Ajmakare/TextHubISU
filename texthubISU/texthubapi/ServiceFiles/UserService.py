@@ -16,9 +16,13 @@ class UserService():
         if adduser_form.is_valid():
             email = adduser_form.cleaned_data['Email']
             user = adduser_form.cleaned_data['Username']
+            password = adduser_form.cleaned_data['Password']
             if not User.objects.filter(email=email).exists() and not User.objects.filter(username=user).exists():
-                User.objects.create_user(
-                    user, email, adduser_form.cleaned_data['Password'])
+                UserDataStore.add_user(user,password,email)
+            else:
+                return "Duplicate username or email already exists"
+        else:
+            return "Form Invalid"
             # UserDataStore.add_user(user)
 
     def login_service(request):

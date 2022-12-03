@@ -9,6 +9,8 @@ from .models import *
 from http import HTTPStatus
 from django.contrib.messages import get_messages
 from django.contrib.auth import get_user_model
+from .views import *
+from .scraperstuff.scraper import TextbookScraper
 
 # Import stuff accordingly
 class ScraperDataStoreTest(TestCase):
@@ -105,25 +107,51 @@ class TextbookDataStoreTest(TestCase):
         notatextbook = 'I am not a textbook'
         with self.assertRaises(AttributeError):
             TextbookDataStore.update_ISBN(notatextbook)
+    
+    def test_request_ISBN_pass(self):
+        testISBN = '9783029321382'
+        testRequest = Request(requestISBN= testISBN)
+        TextbookDataStore.request_ISBN(testRequest)
+        testQuery = Request.objects.filter(requestISBN= testISBN)
+        self.assertTrue(testQuery.exists())
+
+    def test_request_ISBN_fail(self):
+        notarequest = 'Invalid Request'
+        with self.assertRaises(AttributeError):
+            TextbookDataStore.request_ISBN(notarequest)
 
         
 class UserDataStoreTest(TestCase):
     @classmethod
     def setUp(self):
-        pass
-
-    def test_add_user_pass(self):
         self.currentUser = User.objects.create_user(
             username='testusername',
-            email='testemail',
+            email='testemail@gmail.com',
             password='testpassword')
-        UserDataStore.add_user(self.currentUser)
-        login = self.client.login(username='testusername', password='testpassword')
+
+    def test_add_user_pass(self):
+        UserDataStore.add_user('testnewusername', 'testnewemail@gmail.com', 'testnewpassword')
+        login = self.client.login(username='testnewusername', password='testnewpassword')
         self.assertTrue(login)
 
     def test_add_user_fail(self):
+        with self.assertRaises(AttributeError):
+            UserDataStore.add_user('testusername', 'testemail@gmail.com', 'testpassword')
+
+class scraperTest(TestCase):
+    def setUp(self):
         pass
 
+    def test_obtainISBNs_pass(self):
+        file = open("texthubapi/TestingFiles/ISUISBNs_validtesting.txt", "r")
+        currentList = TextbookScraper.obtainISBNs()
+
+        Validlist = []
+        for line in file:
+            stripped_line = line.strip()
+            Validlist.append(stripped_line)
+
+        self.assertTrue(len(currentList)==len(Validlist))
 
 class SiteServiceTest(TestCase):
     @classmethod
@@ -179,11 +207,52 @@ class TextbookServiceTest(TestCase):
         with self.assertRaises(ValueError):
             TextbookService.delete_ISBN_service(request)
 
+    def test_request_isbn_service_pass(self):
+        request = RequestFactory().post('/home', data={'ISBN' : 'testrequest'})
+        ISBN_to_request = request.POST
+        TextbookService.request_ISBN_service(ISBN_to_request)
+        testRequest = Request.objects.filter(requestISBN="testrequest")
+        self.assertTrue(testRequest.exists())
+
 class UserServiceTest(TestCase):
     @classmethod
     def setUp(self):
         pass
 
+    def add_user_service_pass(self):
+        testrequest = RequestFactory().post('/admin', data={'Email': 'testEmail@gmail.com',
+            'Username':'testUsername', 'Password': 'testPassword'})
+        UserService.add_user_service(testrequest)
+        login = self.client.login(username='testUsername', password='testPassword')
+        self.assertTrue(login)
+
+    def add_user_service_invalidform(self):
+        testrequest = RequestFactory().post('/admin', data={'Email': 'testIncorrectEmailFormat',
+            'Username':'testUsername', 'Password': 'testPassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Form Invalid")
+
+    def add_user_service_duplicate_username(self):
+        self.initialUser = User.objects.create_user(
+            username='testusername',
+            email='testemail@gmail.com',
+            password='testpassword')
+        testrequest = RequestFactory().post('/admin', data={
+            'Email': 'othertestemail@gmail.com',
+            'Username':'testusername', 
+            'Password': 'othertestpassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Duplicate username or email already exists")
+
+    def add_user_service_duplicate_email(self):
+        self.initialUser = User.objects.create_user(
+            username='testusername',
+            email='testemail@gmail.com',
+            password='testpassword')
+        testrequest = RequestFactory().post('/admin', data={
+            'Email': 'testemail@gmail.com',
+            'Username':'othertestusername', 
+            'Password': 'othertestpassword'})
+        self.assertTrue(UserService.add_user_service(testrequest) == "Duplicate username or email already exists")
+    
 class ViewsTest(TestCase):
     @classmethod
     def setUp(self):
@@ -235,7 +304,23 @@ class ViewsTest(TestCase):
     
     def test_home_search_isbn_doesnotexist(self):
         response = self.client.post('/home', data = {'ISBN':'notindatabase'})
-        self.assertEqual(response.status_code, HTTPStatus.FOUND)    
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
+
+    def test_home_request_isbn_redirect(self):
+        response = self.client.post('/home', data = {'ISBN':'nonexistentisbn'})
+        self.assertRedirects(response,'/sendrequest/')
+
+    # def test_sendRequest_pass(self):
+    #     self.client.post('/home', data={'ISBN': 'testrequestisbn'}, follow=True)
+    #     request = RequestFactory().post('/sendRequest', data={'RequestButton': True})
+    #     Views.sendRequest_view(request)
+    #     #session = 
+    #     self.assertTrue()
+    #     testNewRequest = Request.objects.filter(requestISBN='testrequestisbn')
+    #     self.assertTrue(testNewRequest.exists())
+        
+
+        
 
 
 
