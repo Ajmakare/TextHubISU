@@ -55,11 +55,10 @@ class TextbookDataStore():
             raise ValueError
 
     def add_ISBN(textbook):
-        try:  # check for duplicates
-            if not Textbook.objects.filter(pk=textbook.ISBN).exists():
-                textbook.save()
-        except:
-            return "Add ISBN exception"
+        if Textbook.objects.filter(pk=textbook.ISBN).exists():
+            raise AttributeError
+        else:
+            textbook.save()
 
     def update_ISBN(textbook):
         try:
