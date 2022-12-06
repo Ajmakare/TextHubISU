@@ -14,19 +14,26 @@
     </h1>
     <div style = "background-color: white; margin-left:35%;width: 30%;border: 1px solid #ccc!important;border-radius: 16px; padding:10px;box-shadow: 3px 10px 8px #888888; text-align: center;">
     {% for textbook in textbooks.bookinfos %}
-      <h3>ISBN: {{ textbook.ISBN }} </h3>
-      <h3>Name of book: {{ textbook.name}} </h3>
-      <h3>Author: {{ textbook.author }} </h3>
-      <h3 style="font-size:large;">This ISBN has been searched {{ textbook.view_count }} times</h3>
+      <h2 style = "font-weight: bolder;">ISBN:</h2>
+      <h3>{{ textbook.ISBN }}</h3>
+      <h2 style = "font-weight: bolder;">Name of book: </h2>      
+      <h3>{{ textbook.name}} </h3>
+      <h2 style = "font-weight: bolder;">Author: </h2>
+      <h3>{{ textbook.author }} </h3>
+      <h2 style="font-size:large;font-weight: bolder;">This ISBN has been searched {{ textbook.view_count }} times</h2>
       {% endfor %}
       <div style = "text-align: center; padding:10px">
         <a href="/home">Go to home page</a>
     </div>
-      <h2 style = "font-weight: bolder;">Prices From Different Sources: </h2>
-      {% for source in textbooks.sources %}
-      <br>
+    <h2 style = "font-weight: bolder;">Prices From Different Sources: </h2>
+    {% for source in textbooks.sources %}
+    <br>
       <h3>Price: ${{ source.price }} </h3>
-      <h3>Source: {{ source.url}} </h3>
+      <a style = 'font-size: 25px;white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 60%;' href={{ source.url }}>{{ source.url }}</a>
       <br>
       {% endfor %}
     </div>
