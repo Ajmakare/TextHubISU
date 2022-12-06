@@ -86,7 +86,7 @@ class TextbookScraper(Scraper):
             print('error bookname')
 
         print(textbook)
-        textbook = [isbn, author, bookName, price, 'Amazon.com']
+        textbook = [isbn, author, bookName, price, driver.current_url]
 
         if textbook[0] != None and textbook[3] != ' ':
 
@@ -99,9 +99,8 @@ class TextbookScraper(Scraper):
             new_source = Source(
                 price=price1, url=textbook[4], ISBN=new_textbook)
             TextbookDataStore.add_ISBN(new_textbook)
-            TextbookDataStore.add_source(new_source, 'Amazon.com')
+            TextbookDataStore.add_source(new_source, driver.current_url)
             Textbook
-            print('about to save a mf textbookzz')
             print(new_textbook.name)
         # print (jsonpart)
         driver.quit()
